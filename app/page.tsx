@@ -97,7 +97,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="/image/2.png"
+            src="/image/daytona.png"
             alt="Daytona Watch"
             width={1200}
             height={1200}
