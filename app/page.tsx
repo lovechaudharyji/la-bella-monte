@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-black text-white">
       <header className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between px-10 py-2 bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div className="text-3xl font-suave font-normal tracking-normal uppercase">
+        <div className="text-xl font-suave font-normal tracking-normal uppercase">
           LA BELLA MONTE
         </div>
         <nav className="hidden items-center gap-10 text-sm tracking-normal uppercase md:flex">
