@@ -164,7 +164,7 @@ export default function Home() {
           <div className="absolute inset-0">
             <video
               className="h-full w-full object-cover"
-              src="/image/hero2.mp4"
+              src="/image/hero1.mp4"
               autoPlay
               loop
               muted
