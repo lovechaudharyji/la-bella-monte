@@ -131,7 +131,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="/image/Phantoms.png"
+            src="/image/Phantomes.png"
             alt="Phantom Watch"
             width={1200}
             height={1200}
