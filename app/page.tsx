@@ -96,16 +96,9 @@ export default function Home() {
         </div>
       </header>
 
-      <div ref={scrollAreaRef} className="relative flex flex-col">
-        <section className="relative z-20 h-screen overflow-hidden flex-shrink-0">
-          <div
-            className="absolute inset-0 will-change-transform"
-            style={{
-              transform: `translateY(${heroBackgroundOffset}px)`,
-              transition:
-                "transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-            }}
-          >
+      <div className="relative flex flex-col">
+        <section className="sticky top-0 z-20 h-screen overflow-hidden flex-shrink-0">
+          <div className="absolute inset-0">
             <video
               className="h-full w-full object-cover"
               src="/image/1.mp4"
@@ -117,15 +110,7 @@ export default function Home() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-black/90" />
           </div>
 
-          <div
-            className="relative z-10 flex h-[calc(100vh-80px)] flex-col items-center justify-center px-4 text-center will-change-transform"
-            style={{
-              transform: `translateY(${heroTextOffset}px)`,
-              opacity: heroTextOpacity,
-              transition:
-                "transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-            }}
-          >
+          <div className="relative z-10 flex h-[calc(100vh-80px)] flex-col items-center justify-center px-4 text-center">
             <div className="mb-3 text-xs tracking-[0.4em] uppercase text-zinc-200">
               Luxor Watches
             </div>
@@ -136,15 +121,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="relative z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0"
-          style={{
-            transform: `translateY(${daytonaTranslateY}px)`,
-            opacity: daytonaOpacity,
-            transition:
-              "transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-          }}
-        >
+        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
             <Image
               src="/image/2.webp"
@@ -155,34 +132,26 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative mx-auto flex max-w-6xl items-start justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-[0.35em] uppercase md:text-3xl">
+          <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
+            <div className="text-2xl font-semibold tracking-[0.35em] uppercase md:text-3xl flex-1 text-left">
               Daytona
             </div>
-            <div className="relative flex flex-1 justify-center">
+            <div className="relative flex flex-[2] justify-center">
               <Image
                 src="/image/2.png"
                 alt="Daytona watch"
-                width={800}
-                height={480}
-                className="max-h-[480px] w-auto object-contain"
+                width={1000}
+                height={600}
+                className="max-h-[600px] w-auto object-contain scale-125"
               />
             </div>
-            <div className="mt-4 text-xs tracking-[0.35em] uppercase text-right">
+            <div className="text-xs tracking-[0.35em] uppercase text-right flex-1">
               Exquisite & Timeless
             </div>
           </div>
         </section>
 
-        <section
-          className="relative z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0"
-          style={{
-            transform: `translateY(${spiritTranslateY}px)`,
-            opacity: spiritOpacity,
-            transition:
-              "transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-          }}
-        >
+        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
             <Image
               src="/image/3.avif"
@@ -212,15 +181,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="relative z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0"
-          style={{
-            transform: `translateY(${phantomTranslateY}px)`,
-            opacity: phantomOpacity,
-            transition:
-              "transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-          }}
-        >
+        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
             <Image
               src="/image/4.avif"
@@ -250,15 +211,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="relative z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0"
-          style={{
-            transform: `translateY(${royaleTranslateY}px)`,
-            opacity: royaleOpacity,
-            transition:
-              "transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-          }}
-        >
+        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
             <video
               className="h-full w-full object-cover"
