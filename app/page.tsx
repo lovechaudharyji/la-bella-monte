@@ -213,7 +213,7 @@ export default function Home() {
         <section id="section-spirit" className="sticky top-0 z-30 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
           <div className="absolute inset-0">
             <Image
-              src="/image/3.avif"
+              src="/image/3S.png"
               alt="Spirit background"
               fill
               sizes="100vw"
