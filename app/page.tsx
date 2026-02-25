@@ -114,7 +114,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="/image/3S.png"
+            src="/image/Spwirit.png"
             alt="Spirit Watch"
             width={1400}
             height={1400}
