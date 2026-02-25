@@ -114,12 +114,12 @@ export default function Home() {
           }}
         >
           <Image
-            src="/image/3S.png"
+            src="/image/Spirits.png"
             alt="Spirit Watch"
             width={1400}
             height={1400}
             className="max-h-[90vh] w-auto object-contain"
-            style={{ transform: 'scale(1.8)' }}
+            style={{ transform: 'scale(1.35) translateY(10%)' }}
           />
         </div>
 
