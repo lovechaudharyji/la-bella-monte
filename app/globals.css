@@ -20,6 +20,7 @@
   --font-sans: var(--font-montserrat);
   --font-mono: var(--font-montserrat);
   --font-suave: 'BT Suave', var(--font-montserrat), sans-serif;
+  --font-luxurious: var(--font-luxurious-script), cursive;
 }
 
 @media (prefers-color-scheme: dark) {
