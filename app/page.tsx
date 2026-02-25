@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { Search, ShoppingCart } from "lucide-react";
 
 export default function Home() {
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
@@ -63,11 +64,11 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-black text-white">
-      <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between border-b border-white/15 bg-gradient-to-b from-black/10 via-[#b6721f]/40 to-black/10 px-10 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl">
-        <div className="text-2xl font-semibold tracking-[0.6em] uppercase">
+      <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-10 py-2 bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div className="text-3xl font-suave font-normal tracking-normal uppercase">
           LUXOR
         </div>
-        <nav className="hidden items-center gap-10 text-sm tracking-[0.4em] uppercase md:flex">
+        <nav className="hidden items-center gap-10 text-sm tracking-normal uppercase md:flex">
           <a href="#" className="hover:text-yellow-100">
             Home
           </a>
@@ -82,12 +83,14 @@ export default function Home() {
           </a>
         </nav>
         <div className="flex items-center gap-6">
-          <button className="text-lg drop-shadow">
-            🔍
-          </button>
           <div className="relative">
-            <button className="text-lg drop-shadow">
-              🛒
+            <button className="flex items-center justify-center text-white hover:text-gray-300 transition-colors">
+              <Search className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="relative">
+            <button className="flex items-center justify-center text-white hover:text-gray-300 transition-colors">
+              <ShoppingCart className="w-5 h-5" />
             </button>
             <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-semibold">
               0
@@ -107,15 +110,15 @@ export default function Home() {
               muted
               playsInline
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-black/90" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90" />
           </div>
 
           <div className="relative z-10 flex h-[calc(100vh-80px)] flex-col items-center justify-center px-4 text-center">
-            <div className="mb-3 text-xs tracking-[0.4em] uppercase text-zinc-200">
+            <div className="mb-3 text-xs tracking-normal uppercase text-white/70 font-medium font-sans">
               Luxor Watches
             </div>
-            <div className="mb-6 h-[2px] w-16 bg-red-600" />
-            <h1 className="text-4xl font-semibold tracking-[0.35em] uppercase md:text-6xl">
+            <div className="mb-6 h-[2px] w-32 bg-red-600" />
+            <h1 className="text-4xl font-normal tracking-normal uppercase md:text-6xl font-sans">
               Luxury Of Time
             </h1>
           </div>
@@ -133,7 +136,7 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
-            <div className="text-2xl font-semibold tracking-[0.35em] uppercase md:text-3xl flex-1 text-left">
+            <div className="text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               Daytona
             </div>
             <div className="relative flex flex-[2] justify-center">
@@ -145,7 +148,7 @@ export default function Home() {
                 className="max-h-[600px] w-auto object-contain scale-125"
               />
             </div>
-            <div className="text-xs tracking-[0.35em] uppercase text-right flex-1">
+            <div className="text-xs tracking-normal uppercase text-right flex-1">
               Exquisite & Timeless
             </div>
           </div>
@@ -163,7 +166,7 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-[0.35em] uppercase md:text-3xl flex-1 text-left">
+            <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               SPIRIT
             </div>
             <div className="relative flex flex-[2] justify-center">
@@ -175,7 +178,7 @@ export default function Home() {
                 className="max-h-[1000px] w-auto object-contain scale-175"
               />
             </div>
-            <div className="mt-4 text-xs tracking-[0.35em] uppercase text-right flex-1">
+            <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               SOPHISTICATED & REFINED
             </div>
           </div>
@@ -193,7 +196,7 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-[0.35em] uppercase md:text-3xl flex-1 text-left">
+            <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               PHANTOM
             </div>
             <div className="relative flex flex-[2] justify-center">
@@ -205,7 +208,7 @@ export default function Home() {
                 className="max-h-[700px] w-auto object-contain scale-140"
               />
             </div>
-            <div className="mt-4 text-xs tracking-[0.35em] uppercase text-right flex-1">
+            <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               MYSTERIOUS & OPULENT
             </div>
           </div>
@@ -224,7 +227,7 @@ export default function Home() {
           </div>
 
           <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-[0.35em] uppercase md:text-3xl flex-1 text-left">
+            <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               ROYALE
             </div>
             <div className="relative flex flex-[2] justify-center">
@@ -236,7 +239,7 @@ export default function Home() {
                 className="max-h-[700px] w-auto object-contain scale-140"
               />
             </div>
-            <div className="mt-4 text-xs tracking-[0.35em] uppercase text-right flex-1">
+            <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               REGAL & MAJESTIC
             </div>
           </div>
