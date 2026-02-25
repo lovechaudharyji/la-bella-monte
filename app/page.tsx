@@ -148,7 +148,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="/image/5 (2).png"
+            src="/image/Suprans.png"
             alt="Royale Watch"
             width={1200}
             height={1200}
