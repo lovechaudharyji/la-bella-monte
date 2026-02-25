@@ -119,7 +119,7 @@ export default function Home() {
             width={1400}
             height={1400}
             className="max-h-[90vh] w-auto object-contain"
-            style={{ transform: 'scale(1.35) translateY(10%)' }}
+            style={{ transform: 'scale(1.45) translateY(10%)' }}
           />
         </div>
 
