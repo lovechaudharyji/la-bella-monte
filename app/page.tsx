@@ -93,7 +93,7 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.daytona * 100)}% 0 0 0)`
+            clipPath: `inset(${100 - (sectionProgress.daytona * 100)}% 0 ${sectionProgress.spirit * 100}% 0)`
           }}
         >
           <Image
@@ -110,7 +110,7 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.spirit * 100)}% 0 0 0)`
+            clipPath: `inset(${100 - (sectionProgress.spirit * 100)}% 0 ${sectionProgress.phantom * 100}% 0)`
           }}
         >
           <Image
@@ -127,7 +127,7 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.phantom * 100)}% 0 0 0)`
+            clipPath: `inset(${100 - (sectionProgress.phantom * 100)}% 0 ${sectionProgress.royale * 100}% 0)`
           }}
         >
           <Image
