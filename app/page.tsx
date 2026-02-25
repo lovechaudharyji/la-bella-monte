@@ -6,65 +6,53 @@ import { Search, ShoppingCart } from "lucide-react";
 
 export default function Home() {
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  
+  // Track visibility of each section for the "curtain" effect
+  const [sectionProgress, setSectionProgress] = useState({
+    daytona: 0,
+    spirit: 0,
+    phantom: 0,
+    royale: 0,
+  });
 
   useEffect(() => {
     const handleScroll = () => {
-      const el = scrollAreaRef.current;
-      if (!el) return;
+      const daytona = document.getElementById('section-daytona');
+      const spirit = document.getElementById('section-spirit');
+      const phantom = document.getElementById('section-phantom');
+      const royale = document.getElementById('section-royale');
 
-      const rect = el.getBoundingClientRect();
-      const height = el.offsetHeight;
-      const viewportHeight = window.innerHeight || 1;
-      const maxDistance = height - viewportHeight;
+      if (!daytona || !spirit || !phantom || !royale) return;
 
-      if (maxDistance <= 0) {
-        setScrollProgress(0);
-        return;
-      }
+      const getVisibility = (el: HTMLElement) => {
+        const rect = el.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        // Calculate how much of the section is visible from the bottom up
+        // When rect.top is at viewportHeight, visibility is 0
+        // When rect.top is at 0, visibility is 1 (fully covers screen)
+        // We clamp between 0 and 1
+        return Math.max(0, Math.min(1, (viewportHeight - rect.top) / viewportHeight));
+      };
 
-      const distance = Math.min(Math.max(-rect.top, 0), maxDistance);
-      const animationDistance = maxDistance;
-      const progress =
-        animationDistance > 0
-          ? Math.min(distance / animationDistance, 1)
-          : 0;
-      setScrollProgress(progress);
+      setSectionProgress({
+        daytona: getVisibility(daytona),
+        spirit: getVisibility(spirit),
+        phantom: getVisibility(phantom),
+        royale: getVisibility(royale),
+      });
     };
 
     window.addEventListener("scroll", handleScroll);
+    // Initial check
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const progress = Math.min(Math.max(scrollProgress, 0), 1);
-  const t1 = Math.min(progress * 4, 1);
-  const t2 = Math.min(Math.max((progress - 0.25) * 4, 0), 1);
-  const t3 = Math.min(Math.max((progress - 0.5) * 4, 0), 1);
-  const t4 = Math.max((progress - 0.75) * 4, 0);
-
-  const heroBackgroundOffset = t1 * -40;
-  const heroTextOffset = t1 * -40;
-  const heroTextOpacity = 1 - Math.min(t1 / 0.7, 1);
-  
-  const daytonaTranslateY = (1 - t1) * 200;
-  const daytonaOpacity =
-    t1 <= 0.3 ? 0 : t1 >= 0.8 ? 1 : (t1 - 0.3) / (0.8 - 0.3);
-
-  const spiritTranslateY = (1 - t2) * 200;
-  const spiritOpacity =
-    t2 <= 0.2 ? 0 : t2 >= 0.6 ? 1 : (t2 - 0.2) / (0.6 - 0.2);
-
-  const phantomTranslateY = (1 - t3) * 200;
-  const phantomOpacity =
-    t3 <= 0.2 ? 0 : t3 >= 0.6 ? 1 : (t3 - 0.2) / (0.6 - 0.2);
-
-  const royaleTranslateY = (1 - t4) * 200;
-  const royaleOpacity =
-    t4 <= 0.2 ? 0 : t4 >= 0.6 ? 1 : (t4 - 0.2) / (0.6 - 0.2);
+  // Track visibility of each section for the "curtain" effect
 
   return (
     <div className="relative min-h-screen bg-black text-white">
-      <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-10 py-2 bg-black/30 backdrop-blur-md border-b border-white/10">
+      <header className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between px-10 py-2 bg-black/30 backdrop-blur-md border-b border-white/10">
         <div className="text-3xl font-suave font-normal tracking-normal uppercase">
           LUXOR
         </div>
@@ -99,8 +87,80 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="relative flex flex-col">
-        <section className="sticky top-0 z-20 h-screen overflow-hidden flex-shrink-0">
+      {/* Fixed Watch Display - "Curtain Reveal" Effect */}
+      <div className="fixed inset-0 z-[60] pointer-events-none">
+        {/* Daytona Watch - Revealed by Daytona Section */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          style={{ 
+            clipPath: `inset(${100 - (sectionProgress.daytona * 100)}% 0 0 0)`
+          }}
+        >
+          <Image
+            src="/image/2.png"
+            alt="Daytona Watch"
+            width={1200}
+            height={1200}
+            className="max-h-[85vh] w-auto object-contain"
+            style={{ transform: 'scale(1.35)' }}
+          />
+        </div>
+
+        {/* Spirit Watch - Revealed by Spirit Section */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          style={{ 
+            clipPath: `inset(${100 - (sectionProgress.spirit * 100)}% 0 0 0)`
+          }}
+        >
+          <Image
+            src="/image/3.png"
+            alt="Spirit Watch"
+            width={1400}
+            height={1400}
+            className="max-h-[90vh] w-auto object-contain"
+            style={{ transform: 'scale(1.8)' }}
+          />
+        </div>
+
+        {/* Phantom Watch - Revealed by Phantom Section */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          style={{ 
+            clipPath: `inset(${100 - (sectionProgress.phantom * 100)}% 0 0 0)`
+          }}
+        >
+          <Image
+            src="/image/4.png"
+            alt="Phantom Watch"
+            width={1200}
+            height={1200}
+            className="max-h-[85vh] w-auto object-contain"
+            style={{ transform: 'scale(1.5)' }}
+          />
+        </div>
+
+        {/* Royale Watch - Revealed by Royale Section */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          style={{ 
+            clipPath: `inset(${100 - (sectionProgress.royale * 100)}% 0 0 0)`
+          }}
+        >
+          <Image
+            src="/image/5 (2).png"
+            alt="Royale Watch"
+            width={1200}
+            height={1200}
+            className="max-h-[85vh] w-auto object-contain"
+            style={{ transform: 'scale(1.5)' }}
+          />
+        </div>
+      </div>
+
+      <div ref={scrollAreaRef} className="relative flex flex-col">
+        
+        <section className="sticky top-0 z-10 h-screen overflow-hidden flex-shrink-0">
           <div className="absolute inset-0">
             <video
               className="h-full w-full object-cover"
@@ -124,8 +184,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
-          <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
+        {/* Section 1: Daytona */}
+        <section id="section-daytona" className="sticky top-0 z-20 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
+          <div className="absolute inset-0">
             <Image
               src="/image/2.webp"
               alt="Daytona background"
@@ -135,18 +196,12 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
+          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
             <div className="text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               Daytona
             </div>
-            <div className="relative flex flex-[2] justify-center">
-              <Image
-                src="/image/2.png"
-                alt="Daytona watch"
-                width={1000}
-                height={600}
-                className="max-h-[600px] w-auto object-contain scale-125"
-              />
+            {/* Watch space placeholder - Watch is now fixed above */}
+            <div className="relative flex h-full flex-[2] items-center justify-center">
             </div>
             <div className="text-xs tracking-normal uppercase text-right flex-1">
               Exquisite & Timeless
@@ -154,8 +209,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
-          <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
+        {/* Section 2: Spirit */}
+        <section id="section-spirit" className="sticky top-0 z-30 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
+          <div className="absolute inset-0">
             <Image
               src="/image/3.avif"
               alt="Spirit background"
@@ -165,18 +221,12 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
+          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
             <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               SPIRIT
             </div>
-            <div className="relative flex flex-[2] justify-center">
-              <Image
-                src="/image/3.png"
-                alt="Spirit watch"
-                width={1400}
-                height={1000}
-                className="max-h-[1000px] w-auto object-contain scale-175"
-              />
+            {/* Watch space placeholder - Watch is now fixed above */}
+            <div className="relative flex h-full flex-[2] items-center justify-center">
             </div>
             <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               SOPHISTICATED & REFINED
@@ -184,8 +234,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
-          <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
+        {/* Section 3: Phantom */}
+        <section id="section-phantom" className="sticky top-0 z-40 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
+          <div className="absolute inset-0">
             <Image
               src="/image/4.avif"
               alt="Phantom background"
@@ -195,18 +246,12 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
+          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
             <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               PHANTOM
             </div>
-            <div className="relative flex flex-[2] justify-center">
-              <Image
-                src="/image/4.png"
-                alt="Phantom watch"
-                width={1100}
-                height={700}
-                className="max-h-[700px] w-auto object-contain scale-140"
-              />
+            {/* Watch space placeholder - Watch is now fixed above */}
+            <div className="relative flex h-full flex-[2] items-center justify-center">
             </div>
             <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               MYSTERIOUS & OPULENT
@@ -214,8 +259,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="sticky top-0 z-20 flex h-screen flex-col justify-center overflow-hidden bg-black px-8 pb-24 pt-20 md:px-12 lg:px-20 flex-shrink-0">
-          <div className="pointer-events-none absolute inset-0 -z-10 opacity-90">
+        {/* Section 4: Royale */}
+        <section id="section-royale" className="sticky top-0 z-50 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
+          <div className="absolute inset-0">
             <video
               className="h-full w-full object-cover"
               src="/image/5.mp4"
@@ -226,18 +272,12 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-6">
+          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
             <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
               ROYALE
             </div>
-            <div className="relative flex flex-[2] justify-center">
-              <Image
-                src="/image/5 (2).png"
-                alt="Royale watch"
-                width={1100}
-                height={700}
-                className="max-h-[700px] w-auto object-contain scale-140"
-              />
+            {/* Watch space placeholder - Watch is now fixed above */}
+            <div className="relative flex h-full flex-[2] items-center justify-center">
             </div>
             <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               REGAL & MAJESTIC
