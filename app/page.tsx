@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { Search, ShoppingCart } from "lucide-react";
 
 export default function Home() {
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
@@ -52,40 +51,6 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-black text-white">
-      <header className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between px-10 py-4 bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div className="text-xl font-suave font-normal tracking-normal uppercase">
-            LA BELLA MONTE
-          </div>
-        <nav className="hidden items-center gap-10 text-sm tracking-normal uppercase md:flex">
-          <a href="#" className="hover:text-yellow-100">
-            Home
-          </a>
-          <a href="#" className="hover:text-yellow-100">
-            Men
-          </a>
-          <a href="#" className="hover:text-yellow-100">
-            Women
-          </a>
-          <a href="#" className="hover:text-yellow-100">
-            News
-          </a>
-        </nav>
-        <div className="flex items-center gap-6">
-          <div className="relative">
-            <button className="flex items-center justify-center text-white hover:text-gray-300 transition-colors">
-              <Search className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="relative">
-            <button className="flex items-center justify-center text-white hover:text-gray-300 transition-colors">
-              <ShoppingCart className="w-5 h-5" />
-            </button>
-            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-semibold">
-              0
-            </span>
-          </div>
-        </div>
-      </header>
 
       {/* Fixed Watch Display - "Curtain Reveal" Effect */}
       <div className="fixed inset-0 z-[60] pointer-events-none">

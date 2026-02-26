@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Luxurious_Script } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/providers/LenisProvider";
+import Navbar from "@/components/Navbar";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -29,7 +30,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.className} ${montserrat.variable} ${luxuriousScript.variable} antialiased`}
       >
-        <LenisProvider>{children}</LenisProvider>
+        <LenisProvider>
+          <Navbar />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );
