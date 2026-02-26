@@ -9,6 +9,9 @@ export default function Navbar() {
         <Link href="/">LA BELLA MONTE</Link>
       </div>
       <nav className="hidden items-center gap-10 text-sm tracking-normal uppercase md:flex">
+        <Link href="/" className="hover:text-yellow-100 transition-colors">
+          Home
+        </Link>
         <Link href="/men" className="hover:text-yellow-100 transition-colors">
           Men
         </Link>
