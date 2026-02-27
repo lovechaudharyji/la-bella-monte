@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -167,6 +168,13 @@ export default function Home() {
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
             <div className="relative flex h-full flex-[2] items-center justify-center">
+              <Link
+                href="/checkout?watch=daytona"
+                aria-label="Checkout Daytona"
+                className="absolute inset-0"
+              >
+                <span className="sr-only">Checkout Daytona</span>
+              </Link>
             </div>
             <div className="text-xs tracking-normal uppercase text-right flex-1">
               Exquisite & Timeless
@@ -192,6 +200,13 @@ export default function Home() {
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
             <div className="relative flex h-full flex-[2] items-center justify-center">
+              <Link
+                href="/checkout?watch=spirit"
+                aria-label="Checkout Spirit"
+                className="absolute inset-0"
+              >
+                <span className="sr-only">Checkout Spirit</span>
+              </Link>
             </div>
             <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               SOPHISTICATED & REFINED
@@ -217,6 +232,13 @@ export default function Home() {
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
             <div className="relative flex h-full flex-[2] items-center justify-center">
+              <Link
+                href="/checkout?watch=phantom"
+                aria-label="Checkout Phantom"
+                className="absolute inset-0"
+              >
+                <span className="sr-only">Checkout Phantom</span>
+              </Link>
             </div>
             <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               MYSTERIOUS & OPULENT
@@ -243,6 +265,13 @@ export default function Home() {
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
             <div className="relative flex h-full flex-[2] items-center justify-center">
+              <Link
+                href="/checkout?watch=royale"
+                aria-label="Checkout Royale"
+                className="absolute inset-0"
+              >
+                <span className="sr-only">Checkout Royale</span>
+              </Link>
             </div>
             <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
               REGAL & MAJESTIC

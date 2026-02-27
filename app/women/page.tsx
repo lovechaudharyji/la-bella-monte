@@ -4,7 +4,7 @@ export default function WomenPage() {
   return (
     <div className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center pt-20">
       <h1 className="text-4xl font-suave tracking-wide uppercase">
-        Women's Collection
+        {"Women's Collection"}
       </h1>
       <p className="mt-4 text-sm text-neutral-400 font-sans tracking-wide">
         Elegant and timeless designs for women.
