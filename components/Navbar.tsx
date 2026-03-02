@@ -1,8 +1,16 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isCheckout = pathname === "/checkout";
+
+  if (isCheckout) return null;
+
   return (
     <header className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between px-10 py-4 bg-black/30 backdrop-blur-md border-b border-white/10 text-white">
       <div className="text-xl font-suave font-normal tracking-normal uppercase">

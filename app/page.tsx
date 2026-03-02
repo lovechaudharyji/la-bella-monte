@@ -279,6 +279,87 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="relative z-[60] w-full bg-white py-24 px-6 text-black">
+          <div className="max-w-4xl mx-auto text-center mb-20">
+            <div className="flex flex-col items-center justify-center gap-3 mb-4">
+              <span className="text-xs tracking-widest uppercase text-gray-500">Luxor Watches</span>
+              <div className="w-12 h-0.5 bg-red-600"></div>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-suave tracking-normal mb-6 text-black">OUR SIGNATURE</h2>
+            <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+              At LUXOR, luxury is more than a purchase—it&apos;s a lifestyle. Become a part of our exclusive
+              community of collectors and enthusiasts who value the art of horology. Experience the finest in
+              high-end watches, delivered with unmatched service and attention to detail.
+            </p>
+          </div>
+
+          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 px-4">
+            {/* Watch 1: Spirit */}
+            <div className="flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] max-w-[280px]">
+                <Image
+                  src="/image/Spirits.png"
+                  alt="Luxor Spirit"
+                  fill
+                  className="object-contain transition-transform duration-700 scale-[1.25] -translate-y-3 group-hover:scale-[1.35] group-hover:-translate-y-3"
+                />
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-0.5 bg-red-600"></div>
+                <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Spirit</span>
+              </div>
+            </div>
+
+            {/* Watch 2: Daytona */}
+            <div className="flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] max-w-[280px]">
+                <Image
+                  src="/image/daytona.png"
+                  alt="Luxor Daytona"
+                  fill
+                  className="object-contain transition-transform duration-700 scale-110 group-hover:scale-125"
+                />
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-0.5 bg-red-600"></div>
+                <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Daytona</span>
+              </div>
+            </div>
+
+            {/* Watch 3: Royale */}
+            <div className="flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] max-w-[280px] overflow-hidden rounded-lg">
+                <Image
+                  src="/image/Suprans.png"
+                  alt="Luxor Royale"
+                  fill
+                  className="object-contain transition-transform duration-700 scale-[1.32] -translate-y-10 group-hover:scale-140 group-hover:-translate-y-10"
+                />
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-0.5 bg-red-600"></div>
+                <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Royale</span>
+              </div>
+            </div>
+
+            {/* Watch 4: Phantom */}
+            <div className="flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] max-w-[280px]">
+                <Image
+                  src="/image/Phantomes.png"
+                  alt="Luxor Phantom"
+                  fill
+                  className="object-contain transition-transform duration-700 scale-110 group-hover:scale-125"
+                />
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-0.5 bg-red-600"></div>
+                <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Phantom</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="relative z-[60] w-full bg-black px-10 py-20 text-white">
           <div className="mx-auto flex max-w-7xl flex-col gap-10 md:flex-row md:justify-between">
