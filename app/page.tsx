@@ -279,8 +279,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative z-[60] w-full bg-white py-24 px-6 text-black">
-          <div className="max-w-4xl mx-auto text-center mb-20">
+        <section className="relative z-[60] w-full bg-white py-24 text-black">
+          <div className="max-w-4xl mx-auto text-center mb-20 px-6">
             <div className="flex flex-col items-center justify-center gap-3 mb-4">
               <span className="text-xs tracking-widest uppercase text-gray-500">Luxor Watches</span>
               <div className="w-12 h-0.5 bg-red-600"></div>
@@ -293,15 +293,15 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 px-4">
+          <div className="w-full flex overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-0 no-scrollbar">
             {/* Watch 1: Spirit */}
-            <div className="flex flex-col items-center gap-6 group">
-              <div className="relative w-full aspect-[3/4] max-w-[280px]">
+            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Spirits.png"
                   alt="Luxor Spirit"
                   fill
-                  className="object-contain transition-transform duration-700 scale-[1.25] -translate-y-3 group-hover:scale-[1.35] group-hover:-translate-y-3"
+                  className="object-contain transition-transform duration-700 scale-[1.75] translate-y-5 group-hover:scale-[1.85] group-hover:translate-y-5"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -311,13 +311,13 @@ export default function Home() {
             </div>
 
             {/* Watch 2: Daytona */}
-            <div className="flex flex-col items-center gap-6 group">
-              <div className="relative w-full aspect-[3/4] max-w-[280px]">
+            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/daytona.png"
                   alt="Luxor Daytona"
                   fill
-                  className="object-contain transition-transform duration-700 scale-110 group-hover:scale-125"
+                  className="object-contain transition-transform duration-700 scale-[1.55] translate-y-10 group-hover:scale-[1.65] group-hover:translate-y-10"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -327,13 +327,13 @@ export default function Home() {
             </div>
 
             {/* Watch 3: Royale */}
-            <div className="flex flex-col items-center gap-6 group">
-              <div className="relative w-full aspect-[3/4] max-w-[280px] overflow-hidden rounded-lg">
+            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Suprans.png"
                   alt="Luxor Royale"
                   fill
-                  className="object-contain transition-transform duration-700 scale-[1.32] -translate-y-10 group-hover:scale-140 group-hover:-translate-y-10"
+                  className="object-contain transition-transform duration-700 scale-[2.00] -translate-y-6 group-hover:scale-[2.10] group-hover:-translate-y-6"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -343,18 +343,34 @@ export default function Home() {
             </div>
 
             {/* Watch 4: Phantom */}
-            <div className="flex flex-col items-center gap-6 group">
-              <div className="relative w-full aspect-[3/4] max-w-[280px]">
+            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Phantomes.png"
                   alt="Luxor Phantom"
                   fill
-                  className="object-contain transition-transform duration-700 scale-110 group-hover:scale-125"
+                  className="object-contain transition-transform duration-700 scale-[1.55] translate-y-10 group-hover:scale-[1.65] group-hover:translate-y-10"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-0.5 bg-red-600"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Phantom</span>
+              </div>
+            </div>
+
+            {/* Watch 5: Yellow */}
+            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
+                <Image
+                  src="/image/Yellow.png"
+                  alt="Luxor Yellow"
+                  fill
+                  className="object-contain transition-transform duration-700 scale-[1.55] translate-y-10 group-hover:scale-[1.65] group-hover:translate-y-10"
+                />
+              </div>
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-0.5 bg-red-600"></div>
+                <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Yellow</span>
               </div>
             </div>
           </div>
