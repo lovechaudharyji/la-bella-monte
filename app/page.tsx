@@ -295,7 +295,7 @@ export default function Home() {
 
           <div className="w-full flex overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-0 no-scrollbar">
             {/* Watch 1: Spirit */}
-            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+            <Link href="/checkout?watch=spirit" className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
               <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Spirits.png"
@@ -308,10 +308,10 @@ export default function Home() {
                 <div className="w-8 h-0.5 bg-red-600"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Spirit</span>
               </div>
-            </div>
+            </Link>
 
             {/* Watch 2: Daytona */}
-            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+            <Link href="/checkout?watch=daytona" className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
               <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/daytona.png"
@@ -324,10 +324,10 @@ export default function Home() {
                 <div className="w-8 h-0.5 bg-red-600"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Daytona</span>
               </div>
-            </div>
+            </Link>
 
             {/* Watch 3: Royale */}
-            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+            <Link href="/checkout?watch=royale" className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
               <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Suprans.png"
@@ -340,10 +340,10 @@ export default function Home() {
                 <div className="w-8 h-0.5 bg-red-600"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Royale</span>
               </div>
-            </div>
+            </Link>
 
             {/* Watch 4: Phantom */}
-            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+            <Link href="/checkout?watch=phantom" className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
               <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Phantomes.png"
@@ -356,10 +356,10 @@ export default function Home() {
                 <div className="w-8 h-0.5 bg-red-600"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Phantom</span>
               </div>
-            </div>
+            </Link>
 
             {/* Watch 5: Yellow */}
-            <div className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
+            <Link href="/checkout?watch=yellow" className="min-w-[50%] flex-shrink-0 snap-center sm:min-w-0 flex flex-col items-center gap-6 group">
               <div className="relative w-full aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image/Yellow.png"
@@ -371,6 +371,115 @@ export default function Home() {
               <div className="flex flex-col items-center gap-3">
                 <div className="w-8 h-0.5 bg-red-600"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase text-black">Luxor Yellow</span>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+
+
+        <section className="relative z-[60] w-full bg-white px-6 md:px-10 py-16 md:py-24 text-black">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex items-center gap-6 mb-10 md:mb-14">
+              <div className="h-px flex-1 bg-neutral-200"></div>
+              <div className="text-xs md:text-sm uppercase tracking-normal text-neutral-500">
+                Explore Collections
+              </div>
+              <div className="h-px flex-1 bg-neutral-200"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              <Link href="/men" className="group relative h-[420px] md:h-[520px] rounded-xl overflow-hidden">
+                <video
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src="/image/hero2.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+                <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40"></div>
+                <div className="absolute inset-0 flex items-end p-8">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-suave tracking-normal text-white">Men Collection</h3>
+                    <div className="mt-2 inline-flex items-center gap-2 text-white">
+                      <span className="text-sm tracking-normal">Shop Now</span>
+                      <span aria-hidden>→</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+
+              <Link href="/women" className="group relative h-[420px] md:h-[520px] rounded-xl overflow-hidden">
+                <Image
+                  src="/image/Women.png"
+                  alt="Women Watches"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30"></div>
+                <div className="absolute inset-0 flex items-end p-8">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-suave tracking-normal text-white">Women Collection</h3>
+                    <div className="mt-2 inline-flex items-center gap-2 text-white">
+                      <span className="text-sm tracking-normal">Shop Now</span>
+                      <span aria-hidden>→</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
+
+
+        {/* Feature Section: Sahil Khan & Watch */}
+        <section className="relative z-[60] w-full bg-gradient-to-b from-white via-gray-400 to-black h-[450px] md:h-[600px] overflow-hidden">
+          <div className="w-full h-full grid grid-cols-1 md:grid-cols-[65%_35%] gap-0">
+            {/* Left Side - Image */}
+            <div className="relative w-full h-full overflow-hidden group">
+              <Image
+                src="/image/sahilkhan.png"
+                alt="Featured Ambassador"
+                fill
+                className="object-contain object-bottom scale-[1.15] transition-transform duration-700 group-hover:scale-[1.2]"
+              />
+            </div>
+
+            {/* Right Side - Watch & Text */}
+            <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
+              {/* Featured Label */}
+              <div className="z-20 mb-[-10px] text-sm tracking-[0.2em] uppercase text-neutral-300 font-medium">
+                Featured
+              </div>
+
+              {/* Watch Container */}
+              <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center -mb-24">
+                <Image
+                  src="/image/daytona.png"
+                  alt="Luxor Daytona"
+                  fill
+                  className="object-contain scale-100"
+                />
+              </div>
+
+              {/* Text Below Watch */}
+              <div className="flex flex-col items-center justify-center z-20 text-center">
+                 <h3 className="text-3xl md:text-5xl font-suave tracking-normal text-white mt-12 mb-3">
+                  Luxor Daytona
+                </h3>
+              </div>
+
+              {/* CTA Button */}
+              <div className="z-20">
+                 <Link 
+                  href="/checkout?watch=daytona"
+                  className="inline-block border border-white px-8 py-3 text-xs tracking-widest uppercase text-white transition-colors hover:bg-white hover:text-black"
+                >
+                  Learn More
+                </Link>
               </div>
             </div>
           </div>
