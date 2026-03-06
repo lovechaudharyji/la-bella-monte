@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { use, useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
+import FooterSection from "../../../components/sections/FooterSection";
 
 // Color mapping for the watch selector
 const colors = [
@@ -307,6 +308,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
           Back to Collection
         </Link>
       </div>
+      <FooterSection />
     </div>
   );
 }

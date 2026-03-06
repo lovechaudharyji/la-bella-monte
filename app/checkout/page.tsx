@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Suspense, useMemo } from "react";
 import { ArrowLeft, ShieldCheck, Truck } from "lucide-react";
 import Link from "next/link";
+import FooterSection from "../../components/sections/FooterSection";
 
 type WatchId = "daytona" | "spirit" | "phantom" | "royale" | "yellow";
 
@@ -63,6 +64,27 @@ function CheckoutContent() {
   const watchId = normalizeWatchId(searchParams.get("watch"));
   const watch = useMemo(() => WATCHES[watchId], [watchId]);
 
+  const priceBreakdown = useMemo(() => {
+    const priceValue = parseInt(watch.price.replace(/[^0-9]/g, ''), 10);
+    const gst = priceValue * 0.18;
+    const shipping = 0;
+    const total = priceValue + gst + shipping;
+
+    const formatCurrency = (value: number) =>
+      new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0,
+      }).format(value);
+
+    return {
+      subtotal: watch.price,
+      gst: formatCurrency(gst),
+      shipping: shipping === 0 ? "Free" : formatCurrency(shipping),
+      total: formatCurrency(total)
+    };
+  }, [watch]);
+
   return (
     <div className="min-h-screen bg-white text-black selection:bg-black/10">
       <div className="flex flex-col lg:flex-row min-h-screen">
@@ -71,7 +93,7 @@ function CheckoutContent() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative w-full lg:w-[45%] lg:fixed lg:h-screen lg:border-r border-neutral-200 bg-neutral-50 overflow-hidden"
+          className="relative w-full lg:w-[45%] lg:sticky lg:top-0 lg:h-screen lg:border-r border-neutral-200 bg-neutral-50 overflow-hidden"
         >
           <div className="absolute top-8 left-8 z-10">
             <Link 
@@ -113,7 +135,7 @@ function CheckoutContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="w-full lg:w-[55%] lg:ml-auto min-h-screen bg-white"
+          className="w-full lg:w-[55%] min-h-screen bg-white"
         >
           <div className="max-w-2xl mx-auto px-6 py-12 lg:py-24 lg:px-16">
             <div className="mb-12">
@@ -176,15 +198,19 @@ function CheckoutContent() {
               <section className="bg-neutral-50 rounded-lg p-6 space-y-4 border border-neutral-100">
                 <div className="flex justify-between text-sm text-neutral-600">
                   <span>Subtotal</span>
-                  <span className="text-black font-medium">{watch.price}</span>
+                  <span className="text-black font-medium">{priceBreakdown.subtotal}</span>
+                </div>
+                <div className="flex justify-between text-sm text-neutral-600">
+                  <span>GST (18%)</span>
+                  <span className="text-black font-medium">{priceBreakdown.gst}</span>
                 </div>
                 <div className="flex justify-between text-sm text-neutral-600">
                   <span>Shipping</span>
-                  <span className="text-neutral-500 uppercase text-xs">Calculated at next step</span>
+                  <span className="text-green-600 font-medium uppercase text-xs">{priceBreakdown.shipping}</span>
                 </div>
                 <div className="pt-4 border-t border-neutral-200 flex justify-between items-center">
                   <span className="text-sm uppercase tracking-widest text-black font-semibold">Total</span>
-                  <span className="text-xl font-light text-black">{watch.price}</span>
+                  <span className="text-xl font-light text-black">{priceBreakdown.total}</span>
                 </div>
               </section>
 
@@ -212,6 +238,7 @@ function CheckoutContent() {
           </div>
         </motion.div>
       </div>
+      <FooterSection />
     </div>
   );
 }
