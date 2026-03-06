@@ -154,7 +154,7 @@ export default function Home() {
               alt="Daytona background"
               fill
               sizes="100vw"
-              className="object-cover object-right md:object-center"
+              className="object-cover object-center"
             />
           </div>
 
@@ -186,7 +186,7 @@ export default function Home() {
               alt="Spirit background"
               fill
               sizes="100vw"
-              className="object-cover object-right md:object-center"
+              className="object-cover object-center"
             />
           </div>
 
@@ -218,7 +218,7 @@ export default function Home() {
               alt="Phantom background"
               fill
               sizes="100vw"
-              className="object-cover object-right md:object-center"
+              className="object-cover object-center"
             />
           </div>
 
@@ -246,7 +246,7 @@ export default function Home() {
         <section id="section-royale" className="sticky top-0 z-50 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
           <div className="absolute inset-0">
             <video
-              className="h-full w-full object-cover object-right md:object-center"
+              className="h-full w-full object-cover object-center"
               src="/image/5.mp4"
               autoPlay
               loop
