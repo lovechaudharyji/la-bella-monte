@@ -2,8 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { use } from "react";
+import { use, useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
+
+// Color mapping for the watch selector
+const colors = [
+  { name: 'Black', slug: 'daytona', hex: '#000000' },
+  { name: 'Blue', slug: 'spirit', hex: '#1d4ed8' },
+  { name: 'Red', slug: 'phantom', hex: '#b91c1c' },
+  { name: 'Yellow', slug: 'yellow', hex: '#eab308' },
+  { name: 'Orange', slug: 'royale', hex: '#ea580c' },
+];
 
 // Common watch data used across all watches
 const commonWatchData = {
@@ -102,7 +111,15 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
   // Unwrap params using React.use()
   const { slug } = use(params);
   
-  const watch = watches[slug as string];
+  // State for active watch selection (defaults to current slug)
+  const [activeSlug, setActiveSlug] = useState(slug);
+
+  // Update activeSlug if the URL slug changes (e.g. navigation)
+  useEffect(() => {
+    setActiveSlug(slug);
+  }, [slug]);
+
+  const watch = watches[activeSlug as string];
 
   if (!watch) {
     return (
@@ -123,7 +140,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
         <div className="absolute inset-0 z-0">
           {watch.bgVideo ? (
             <video
-              className="h-full w-full object-cover opacity-10"
+              className="h-full w-full object-cover opacity-50"
               src={watch.bgVideo}
               autoPlay
               loop
@@ -135,10 +152,10 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
               src={watch.bgImage || "/image/2.webp"} // Fallback image
               alt={`${watch.name} background`}
               fill
-              className="object-cover opacity-10"
+              className="object-cover opacity-50"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white"></div>
         </div>
 
         {/* Back Button */}
@@ -173,6 +190,30 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
             <p className="text-lg md:text-xl font-sans tracking-widest text-neutral-500 uppercase mb-8">
               {watch.tagline}
             </p>
+
+            {/* Color Selection */}
+            <div className="mb-8">
+              <span className="text-xs font-bold tracking-widest uppercase text-neutral-500 block mb-3">
+                Select Color
+              </span>
+              <div className="flex gap-4 justify-center md:justify-start">
+                {colors.map((color) => (
+                  <button
+                    key={color.slug}
+                    onClick={() => setActiveSlug(color.slug)}
+                    className={`w-8 h-8 rounded-full transition-all duration-300 ${
+                      activeSlug === color.slug 
+                        ? 'ring-2 ring-black ring-offset-2 scale-110' 
+                        : 'hover:scale-110 ring-1 ring-neutral-200'
+                    }`}
+                    style={{ backgroundColor: color.hex }}
+                    aria-label={`Select ${color.name}`}
+                    title={color.name}
+                  />
+                ))}
+              </div>
+            </div>
+
             <div className="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
               <button 
                 onClick={() => alert("Added to cart!")}
@@ -181,7 +222,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
                 Add to Cart
               </button>
               <Link 
-                href={`/checkout?watch=${slug}`}
+                href={`/checkout?watch=${activeSlug}`}
                 className="bg-black text-white px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-neutral-800 transition-colors"
               >
                 Checkout
