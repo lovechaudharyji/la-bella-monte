@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import HeroSection from "../components/sections/HeroSection";
 import DaytonaSection from "../components/sections/DaytonaSection";
@@ -66,66 +67,74 @@ export default function Home() {
       <div className="fixed inset-0 z-[60] pointer-events-none">
         {/* Daytona Watch - Revealed by Daytona Section */}
         <div 
-          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
             clipPath: `inset(${100 - (sectionProgress.daytona * 100)}% 0 ${sectionProgress.spirit * 100}% 0)`
           }}
         >
-          <Image
-            src="/image/daytona.png"
-            alt="Daytona Watch"
-            width={1200}
-            height={1200}
-            className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.35] translate-y-[10%]"
-          />
+          <Link href="/watches/daytona" className="relative flex items-center justify-center h-full w-full">
+            <Image
+              src="/image/daytona.png"
+              alt="Daytona Watch"
+              width={1200}
+              height={1200}
+              className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.35] translate-y-[10%]"
+            />
+          </Link>
         </div>
 
         {/* Spirit Watch - Revealed by Spirit Section */}
         <div 
-          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
             clipPath: `inset(${100 - (sectionProgress.spirit * 100)}% 0 ${sectionProgress.phantom * 100}% 0)`
           }}
         >
-          <Image
-            src="/image/Spirits.png"
-            alt="Spirit Watch"
-            width={1400}
-            height={1400}
-            className="max-h-[90vh] w-auto object-contain transform transition-transform duration-700 scale-[1.05] md:scale-[1.45] translate-y-[5%]"
-          />
+          <Link href="/watches/spirit" className="relative flex items-center justify-center h-full w-full">
+            <Image
+              src="/image/Spirits.png"
+              alt="Spirit Watch"
+              width={1400}
+              height={1400}
+              className="max-h-[90vh] w-auto object-contain transform transition-transform duration-700 scale-[1.05] md:scale-[1.45] translate-y-[5%]"
+            />
+          </Link>
         </div>
 
         {/* Phantom Watch - Revealed by Phantom Section */}
         <div 
-          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
             clipPath: `inset(${100 - (sectionProgress.phantom * 100)}% 0 ${sectionProgress.royale * 100}% 0)`
           }}
         >
-          <Image
-            src="/image/Phantomes.png"
-            alt="Phantom Watch"
-            width={1200}
-            height={1200}
-            className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.35] translate-y-[10%] -translate-x-[2%] md:-translate-x-[2%]"
-          />
+          <Link href="/watches/phantom" className="relative flex items-center justify-center h-full w-full">
+            <Image
+              src="/image/Phantomes.png"
+              alt="Phantom Watch"
+              width={1200}
+              height={1200}
+              className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.35] translate-y-[10%] -translate-x-[2%] md:-translate-x-[2%]"
+            />
+          </Link>
         </div>
 
         {/* Royale Watch - Revealed by Royale Section */}
         <div 
-          className="absolute inset-0 flex items-center justify-center bg-transparent"
+          className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
             clipPath: `inset(${100 - (sectionProgress.royale * 100)}% 0 0 0)`
           }}
         >
-          <Image
-            src="/image/Suprans.png"
-            alt="Royale Watch"
-            width={1200}
-            height={1200}
-            className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.7] translate-x-[5%] md:-translate-y-[2%]"
-          />
+          <Link href="/watches/royale" className="relative flex items-center justify-center h-full w-full">
+            <Image
+              src="/image/Suprans.png"
+              alt="Royale Watch"
+              width={1200}
+              height={1200}
+              className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.7] translate-x-[5%] md:-translate-y-[2%]"
+            />
+          </Link>
         </div>
       </div>
 

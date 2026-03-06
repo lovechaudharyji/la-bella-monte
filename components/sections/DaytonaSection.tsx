@@ -18,15 +18,15 @@ export default function DaytonaSection() {
 
       <div className="relative mx-auto flex h-full max-w-7xl flex-col md:flex-row items-center justify-between gap-6 pt-32 pb-2 md:py-0">
         <div className="text-4xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-center md:text-left order-1">
-          Daytona
+          LBM Obsidian Moon
         </div>
         <div className="relative flex h-full flex-[2] items-center justify-center order-2">
           <Link
-            href="/checkout?watch=daytona"
-            aria-label="Checkout Daytona"
+            href="/watches/daytona"
+            aria-label="View Daytona Details"
             className="absolute inset-0"
           >
-            <span className="sr-only">Checkout Daytona</span>
+            <span className="sr-only">View Daytona Details</span>
           </Link>
         </div>
         <div className="text-base md:text-xs font-bold tracking-normal uppercase text-center md:text-right flex-1 order-3 mb-2 md:mb-0 flex flex-col justify-end w-full pb-20 md:pb-0">

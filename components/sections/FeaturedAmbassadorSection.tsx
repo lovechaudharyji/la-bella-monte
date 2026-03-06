@@ -24,7 +24,7 @@ export default function FeaturedAmbassadorSection() {
           <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[500px] aspect-square flex items-center justify-center mt-44 mb-1 md:mt-0 md:-mb-24">
             <Image
               src="/image/daytona.png"
-              alt="Luxor Daytona"
+              alt="LBM Obsidian Moon"
               fill
               className="object-contain scale-[1.65] md:scale-100"
             />
@@ -32,13 +32,13 @@ export default function FeaturedAmbassadorSection() {
 
           <div className="flex flex-col items-center justify-center z-20 text-center">
             <h3 className="text-xl md:text-5xl font-suave tracking-normal text-white mt-8 md:mt-12 mb-2 md:mb-3">
-              Luxor Daytona
+              LBM Obsidian Moon
             </h3>
           </div>
 
           <div className="z-20 mt-3 md:mt-8">
             <Link 
-              href="/men"
+              href="/watches/daytona"
               className="inline-block border border-white px-5 py-2 text-[10px] md:text-xs tracking-[0.15em] md:tracking-widest uppercase text-white transition-colors hover:bg-white hover:text-black"
             >
               Learn More

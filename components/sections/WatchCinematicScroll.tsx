@@ -166,7 +166,7 @@ export function WatchCinematicScroll({
               }}
               className="mb-4 text-xs tracking-[0.4em] text-zinc-300"
             >
-              LUXOR WATCHES
+              LA BELLA MONTE WATCHES
             </motion.div>
             <motion.h2
               className="mb-4 text-4xl font-semibold tracking-[0.25em] uppercase sm:text-5xl md:text-6xl"

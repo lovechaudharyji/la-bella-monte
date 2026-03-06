@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function FooterSection() {
   return (
     <footer className="relative z-[60] w-full bg-black px-10 py-20 text-white">
@@ -20,24 +22,29 @@ export default function FooterSection() {
             </h3>
             <ul className="flex flex-col gap-2 text-sm font-light tracking-wide text-neutral-300">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Daytona
-                </a>
+                <Link href="/watches/daytona" className="hover:text-white transition-colors">
+                  LBM Obsidian Moon
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Spirit
-                </a>
+                <Link href="/watches/spirit" className="hover:text-white transition-colors">
+                  LBM Velaris
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Phantom
-                </a>
+                <Link href="/watches/phantom" className="hover:text-white transition-colors">
+                  LBM Etna Rosso
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Royale
-                </a>
+                <Link href="/watches/royale" className="hover:text-white transition-colors">
+                  LBM Solar Monarch – Gold
+                </Link>
+              </li>
+              <li>
+                <Link href="/watches/yellow" className="hover:text-white transition-colors">
+                  LBM Sole Edition
+                </Link>
               </li>
             </ul>
           </div>

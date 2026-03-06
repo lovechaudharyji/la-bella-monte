@@ -14,34 +14,34 @@ const WATCHES: Record<
   { name: string; subtitle: string; imageSrc: string; price: string }
 > = {
   daytona: {
-    name: "Daytona",
-    subtitle: "Precision & Performance",
+    name: "LBM Obsidian Moon",
+    subtitle: "Exquisite & Timeless",
     imageSrc: "/image/daytona.png",
-    price: "$12,800",
+    price: "₹24,500",
   },
   spirit: {
-    name: "Spirit",
+    name: "LBM Velaris",
     subtitle: "Sophisticated & Refined",
     imageSrc: "/image/Spirits.png",
-    price: "$14,200",
+    price: "₹18,900",
   },
   phantom: {
-    name: "Phantom",
+    name: "LBM Etna Rosso",
     subtitle: "Mysterious & Opulent",
     imageSrc: "/image/Phantomes.png",
-    price: "$16,900",
+    price: "₹32,000",
   },
   royale: {
-    name: "Royale",
+    name: "LBM Solar Monarch – Gold",
     subtitle: "Regal & Majestic",
     imageSrc: "/image/Suprans.png",
-    price: "$18,500",
+    price: "₹150,000",
   },
   yellow: {
-    name: "Yellow",
+    name: "LBM Sole Edition",
     subtitle: "Vibrant & Bold",
     imageSrc: "/image/Yellow.png",
-    price: "$15,500",
+    price: "₹21,000",
   },
 };
 
