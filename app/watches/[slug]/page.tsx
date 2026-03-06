@@ -184,7 +184,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
 
           {/* Text Content */}
           <div className="flex-1 text-center md:text-left mb-10 md:mb-0">
-            <h1 className="text-5xl md:text-8xl font-suave tracking-normal uppercase mb-4 text-black">
+            <h1 className="text-3xl md:text-6xl font-suave tracking-normal uppercase mb-4 text-black">
               {watch.name}
             </h1>
             <p className="text-lg md:text-xl font-sans tracking-widest text-neutral-500 uppercase mb-8">
