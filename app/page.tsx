@@ -67,8 +67,7 @@ export default function Home() {
             alt="Daytona Watch"
             width={1200}
             height={1200}
-            className="max-h-[85vh] w-auto object-contain"
-            style={{ transform: 'scale(1.35) translateY(10%)' }}
+            className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.35] translate-y-[10%]"
           />
         </div>
 
@@ -84,8 +83,7 @@ export default function Home() {
             alt="Spirit Watch"
             width={1400}
             height={1400}
-            className="max-h-[90vh] w-auto object-contain"
-            style={{ transform: 'scale(1.45) translateY(5%)' }}
+            className="max-h-[90vh] w-auto object-contain transform transition-transform duration-700 scale-[1.05] md:scale-[1.45] translate-y-[5%]"
           />
         </div>
 
@@ -101,8 +99,7 @@ export default function Home() {
             alt="Phantom Watch"
             width={1200}
             height={1200}
-            className="max-h-[85vh] w-auto object-contain"
-            style={{ transform: 'scale(1.35) translateY(10%)' }}
+            className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.35] translate-y-[10%] -translate-x-[2%] md:-translate-x-[2%]"
           />
         </div>
 
@@ -118,8 +115,7 @@ export default function Home() {
             alt="Royale Watch"
             width={1200}
             height={1200}
-            className="max-h-[85vh] w-auto object-contain"
-            style={{ transform: 'scale(1.8) translateX(5%)' }}
+            className="max-h-[85vh] w-auto object-contain transform transition-transform duration-700 scale-[0.9] md:scale-[1.7] translate-x-[5%] md:-translate-y-[2%]"
           />
         </div>
       </div>
@@ -158,16 +154,16 @@ export default function Home() {
               alt="Daytona background"
               fill
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-right md:object-center"
             />
           </div>
 
-          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
-            <div className="text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col md:flex-row items-center justify-between gap-6 pt-32 pb-2 md:py-0">
+            <div className="text-4xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-center md:text-left order-1">
               Daytona
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
-            <div className="relative flex h-full flex-[2] items-center justify-center">
+            <div className="relative flex h-full flex-[2] items-center justify-center order-2">
               <Link
                 href="/checkout?watch=daytona"
                 aria-label="Checkout Daytona"
@@ -176,7 +172,7 @@ export default function Home() {
                 <span className="sr-only">Checkout Daytona</span>
               </Link>
             </div>
-            <div className="text-xs tracking-normal uppercase text-right flex-1">
+            <div className="text-base md:text-xs font-bold tracking-normal uppercase text-center md:text-right flex-1 order-3 mb-2 md:mb-0 flex flex-col justify-end w-full pb-20 md:pb-0">
               Exquisite & Timeless
             </div>
           </div>
@@ -190,16 +186,16 @@ export default function Home() {
               alt="Spirit background"
               fill
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-right md:object-center"
             />
           </div>
 
-          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col md:flex-row items-center justify-between gap-6 pt-32 pb-2 md:py-0">
+            <div className="text-4xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-center md:text-left order-1">
               SPIRIT
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
-            <div className="relative flex h-full flex-[2] items-center justify-center">
+            <div className="relative flex h-full flex-[2] items-center justify-center order-2">
               <Link
                 href="/checkout?watch=spirit"
                 aria-label="Checkout Spirit"
@@ -208,7 +204,7 @@ export default function Home() {
                 <span className="sr-only">Checkout Spirit</span>
               </Link>
             </div>
-            <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
+            <div className="text-base md:text-xs font-bold tracking-normal uppercase text-center md:text-right flex-1 order-3 mb-2 md:mb-0 flex flex-col justify-end w-full pb-20 md:pb-0">
               SOPHISTICATED & REFINED
             </div>
           </div>
@@ -222,16 +218,16 @@ export default function Home() {
               alt="Phantom background"
               fill
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-right md:object-center"
             />
           </div>
 
-          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col md:flex-row items-center justify-between gap-6 pt-32 pb-2 md:py-0">
+            <div className="text-4xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-center md:text-left order-1">
               PHANTOM
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
-            <div className="relative flex h-full flex-[2] items-center justify-center">
+            <div className="relative flex h-full flex-[2] items-center justify-center order-2">
               <Link
                 href="/checkout?watch=phantom"
                 aria-label="Checkout Phantom"
@@ -240,7 +236,7 @@ export default function Home() {
                 <span className="sr-only">Checkout Phantom</span>
               </Link>
             </div>
-            <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
+            <div className="text-base md:text-xs font-bold tracking-normal uppercase text-center md:text-right flex-1 order-3 mb-2 md:mb-0 flex flex-col justify-end w-full pb-20 md:pb-0">
               MYSTERIOUS & OPULENT
             </div>
           </div>
@@ -250,7 +246,7 @@ export default function Home() {
         <section id="section-royale" className="sticky top-0 z-50 h-screen w-full flex-shrink-0 overflow-hidden bg-black text-white">
           <div className="absolute inset-0">
             <video
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-right md:object-center"
               src="/image/5.mp4"
               autoPlay
               loop
@@ -259,12 +255,12 @@ export default function Home() {
             />
           </div>
 
-          <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-6">
-            <div className="mt-4 text-2xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-left">
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col md:flex-row items-center justify-between gap-6 pt-32 pb-2 md:py-0">
+            <div className="text-4xl font-semibold tracking-normal uppercase md:text-3xl flex-1 text-center md:text-left order-1">
               ROYALE
             </div>
             {/* Watch space placeholder - Watch is now fixed above */}
-            <div className="relative flex h-full flex-[2] items-center justify-center">
+            <div className="relative flex h-full flex-[2] items-center justify-center order-2">
               <Link
                 href="/checkout?watch=royale"
                 aria-label="Checkout Royale"
@@ -273,7 +269,7 @@ export default function Home() {
                 <span className="sr-only">Checkout Royale</span>
               </Link>
             </div>
-            <div className="mt-4 text-xs tracking-normal uppercase text-right flex-1">
+            <div className="text-base md:text-xs font-bold tracking-normal uppercase text-center md:text-right flex-1 order-3 mb-2 md:mb-0 flex flex-col justify-end w-full pb-20 md:pb-0">
               REGAL & MAJESTIC
             </div>
           </div>
@@ -333,7 +329,7 @@ export default function Home() {
                   src="/image/Suprans.png"
                   alt="Luxor Royale"
                   fill
-                  className="object-contain transition-transform duration-700 scale-[2.00] -translate-y-6 group-hover:scale-[2.10] group-hover:-translate-y-6"
+                  className="object-contain transition-transform duration-700 scale-[2.00] -translate-y-1 md:-translate-y-6 group-hover:scale-[2.10] group-hover:-translate-y-1 md:group-hover:-translate-y-6"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -376,58 +372,98 @@ export default function Home() {
           </div>
         </section>
 
-
-
-        <section className="relative z-[60] w-full bg-white px-6 md:px-10 py-16 md:py-24 text-black">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-center gap-6 mb-10 md:mb-14">
-              <div className="h-px flex-1 bg-neutral-200"></div>
-              <div className="text-xs md:text-sm uppercase tracking-normal text-neutral-500">
-                Explore Collections
-              </div>
-              <div className="h-px flex-1 bg-neutral-200"></div>
+        {/* Product Features Bar */}
+        <section className="relative z-[60] w-full bg-white py-24 border-t border-neutral-100">
+          <div className="w-full px-4">
+            <div className="flex flex-col items-center justify-center gap-3 mb-16">
+              <span className="text-xs tracking-widest uppercase text-gray-500">LA BELLA MONTE</span>
+              <div className="w-12 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl md:text-5xl font-suave tracking-normal text-black mt-2">FEATURES</h2>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              <Link href="/men" className="group relative h-[420px] md:h-[520px] rounded-xl overflow-hidden">
-                <video
-                  className="absolute inset-0 h-full w-full object-cover"
-                  src="/image/hero2.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                />
-                <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40"></div>
-                <div className="absolute inset-0 flex items-end p-8">
-                  <div>
-                    <h3 className="text-2xl md:text-3xl font-suave tracking-normal text-white">Men Collection</h3>
-                    <div className="mt-2 inline-flex items-center gap-2 text-white">
-                      <span className="text-sm tracking-normal">Shop Now</span>
-                      <span aria-hidden>→</span>
-                    </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 md:gap-4 justify-items-center text-center">
+              {[
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor"/>
+                      <path d="M12 6V12L16 14" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "1 Year Warranty"
+                },
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor"/>
+                      <path d="M2 17L12 22L22 17" stroke="currentColor"/>
+                      <path d="M2 12L12 17L22 12" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "Automatic"
+                },
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor"/>
+                      <path d="M8 12C8 12 10 14 12 14C14 14 16 12 16 12" stroke="currentColor"/>
+                      <path d="M12 2V6" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "3 ATM Water Resistance"
+                },
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 3V5" stroke="currentColor"/>
+                      <path d="M12 19V21" stroke="currentColor"/>
+                      <path d="M21 12H19" stroke="currentColor"/>
+                      <path d="M5 12H3" stroke="currentColor"/>
+                      <path d="M18.364 5.63604L16.9498 7.05025" stroke="currentColor"/>
+                      <path d="M7.05025 16.9497L5.63604 18.364" stroke="currentColor"/>
+                      <path d="M18.364 18.364L16.9498 16.9497" stroke="currentColor"/>
+                      <path d="M7.05025 7.05025L5.63604 5.63604" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "Glow in Dark"
+                },
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 6L9 17L4 12" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "6 Months Replacement"
+                },
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor"/>
+                      <path d="M12 22V12" stroke="currentColor"/>
+                      <path d="M22 7V17L12 22" stroke="currentColor"/>
+                      <path d="M2 7V17L12 22" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "Stainless Steel"
+                },
+                {
+                  icon: (
+                    <svg className="w-12 h-12 stroke-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 21H21" stroke="currentColor"/>
+                      <path d="M5 21V7L13 3L21 7V21" stroke="currentColor"/>
+                    </svg>
+                  ),
+                  text: "Design in Italy"
+                }
+              ].map((feature, index) => (
+                <div key={index} className="flex flex-col items-center gap-4 group">
+                  <div className="w-24 h-24 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-800 transition-colors duration-500 group-hover:bg-black group-hover:text-white">
+                    {feature.icon}
                   </div>
+                  <span className="text-xs uppercase tracking-[0.2em] font-medium text-neutral-600 max-w-[120px]">
+                    {feature.text}
+                  </span>
                 </div>
-              </Link>
-
-              <Link href="/women" className="group relative h-[420px] md:h-[520px] rounded-xl overflow-hidden">
-                <Image
-                  src="/image/Women.png"
-                  alt="Women Watches"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30"></div>
-                <div className="absolute inset-0 flex items-end p-8">
-                  <div>
-                    <h3 className="text-2xl md:text-3xl font-suave tracking-normal text-white">Women Collection</h3>
-                    <div className="mt-2 inline-flex items-center gap-2 text-white">
-                      <span className="text-sm tracking-normal">Shop Now</span>
-                      <span aria-hidden>→</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -435,48 +471,50 @@ export default function Home() {
 
 
 
+
+
         {/* Feature Section: Sahil Khan & Watch */}
         <section className="relative z-[60] w-full bg-gradient-to-b from-white via-gray-400 to-black h-[450px] md:h-[600px] overflow-hidden">
-          <div className="w-full h-full grid grid-cols-1 md:grid-cols-[65%_35%] gap-0">
+          <div className="w-full h-full grid grid-cols-[65%_35%] md:grid-cols-[55%_45%] gap-0">
             {/* Left Side - Image */}
             <div className="relative w-full h-full overflow-hidden group">
               <Image
                 src="/image/sahilkhan.png"
                 alt="Featured Ambassador"
                 fill
-                className="object-contain object-bottom scale-[1.15] transition-transform duration-700 group-hover:scale-[1.2]"
+                className="object-contain object-left-bottom md:object-center scale-[1.2] md:scale-[1.15] transition-transform duration-700 group-hover:scale-[1.25] md:group-hover:scale-[1.2]"
               />
             </div>
 
             {/* Right Side - Watch & Text */}
             <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
               {/* Featured Label */}
-              <div className="z-20 mb-[-10px] text-sm tracking-[0.2em] uppercase text-neutral-300 font-medium">
+              <div className="z-20 mb-[-10px] text-sm tracking-[0.2em] uppercase text-neutral-300 font-medium hidden md:block">
                 Featured
               </div>
 
               {/* Watch Container */}
-              <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center -mb-24">
+              <div className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[500px] aspect-square flex items-center justify-center mt-44 mb-1 md:mt-0 md:-mb-24">
                 <Image
                   src="/image/daytona.png"
                   alt="Luxor Daytona"
                   fill
-                  className="object-contain scale-100"
+                  className="object-contain scale-[1.65] md:scale-100"
                 />
               </div>
 
               {/* Text Below Watch */}
               <div className="flex flex-col items-center justify-center z-20 text-center">
-                 <h3 className="text-3xl md:text-5xl font-suave tracking-normal text-white mt-12 mb-3">
+                 <h3 className="text-xl md:text-5xl font-suave tracking-normal text-white mt-8 md:mt-12 mb-2 md:mb-3">
                   Luxor Daytona
                 </h3>
               </div>
 
               {/* CTA Button */}
-              <div className="z-20">
+              <div className="z-20 mt-3 md:mt-8">
                  <Link 
                   href="/men"
-                  className="inline-block border border-white px-8 py-3 text-xs tracking-widest uppercase text-white transition-colors hover:bg-white hover:text-black"
+                  className="inline-block border border-white px-5 py-2 text-[10px] md:text-xs tracking-[0.15em] md:tracking-widest uppercase text-white transition-colors hover:bg-white hover:text-black"
                 >
                   Learn More
                 </Link>
