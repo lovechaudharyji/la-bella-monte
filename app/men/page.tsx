@@ -2,12 +2,9 @@
 
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Truck, Award, Star, ShoppingBag } from "lucide-react";
-import { useState } from "react";
 import FooterSection from "../../components/sections/FooterSection";
 
 export default function MenPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-
   const watches = [
     {
       id: "royale",
@@ -55,12 +52,6 @@ export default function MenPage() {
       price: "₹21,000"
     }
   ];
-
-  const categories = ["All", "Chronograph", "Diver", "Dress", "Sport", "Skeleton"];
-
-  const filteredWatches = activeCategory === "All" 
-    ? watches 
-    : watches.filter(w => w.category === activeCategory);
 
   return (
     <div className="relative min-h-screen bg-black text-white">
@@ -229,26 +220,9 @@ export default function MenPage() {
                 </p>
             </div>
 
-            {/* Filters */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-16">
-                {categories.map((cat) => (
-                    <button
-                        key={cat}
-                        onClick={() => setActiveCategory(cat)}
-                        className={`text-sm uppercase tracking-widest px-6 py-3 rounded-full transition-all ${
-                            activeCategory === cat 
-                            ? "bg-yellow-500 text-black font-bold" 
-                            : "text-neutral-500 hover:text-white border border-transparent hover:border-white/20"
-                        }`}
-                    >
-                        {cat}
-                    </button>
-                ))}
-            </div>
-
             {/* Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredWatches.map((watch) => (
+                {watches.map((watch) => (
                     <div key={watch.id} className="group">
                         <Link href={watch.link} className="block relative aspect-[4/5] bg-neutral-900 overflow-hidden mb-6">
                             {/* Badge */}
