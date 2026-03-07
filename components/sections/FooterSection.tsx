@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Mail, Phone } from "lucide-react";
 
 export default function FooterSection() {
   return (
@@ -64,9 +65,24 @@ export default function FooterSection() {
                   Terms of Service
                 </a>
               </li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-neutral-500">
+              Contact
+            </h3>
+            <ul className="flex flex-col gap-2 text-sm font-light tracking-wide text-neutral-300">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Contact Us
+                <a href="mailto:contact@labellamonte.com" className="flex items-center gap-2 hover:text-white transition-colors">
+                  <Mail className="w-4 h-4" />
+                  <span>contact@labellamonte.com</span>
+                </a>
+              </li>
+              <li>
+                <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-white transition-colors">
+                  <Phone className="w-4 h-4" />
+                  <span>+91 98765 43210</span>
                 </a>
               </li>
             </ul>

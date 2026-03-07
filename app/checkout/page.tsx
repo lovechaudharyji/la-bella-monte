@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Suspense, useMemo } from "react";
-import { ArrowLeft, ShieldCheck, Truck } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Truck, Mail, User, MapPin, Building2, Hash, CreditCard } from "lucide-react";
 import Link from "next/link";
 import FooterSection from "../../components/sections/FooterSection";
 
@@ -95,9 +95,9 @@ function CheckoutContent() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative w-full lg:w-[45%] lg:sticky lg:top-0 lg:h-screen lg:border-r border-neutral-200 bg-neutral-50 overflow-hidden"
         >
-          <div className="absolute top-8 left-8 z-10">
+          <div className="absolute top-24 left-8 z-10">
             <Link 
-              href="/" 
+              href={`/watches/${watchId}`}
               className="group flex items-center gap-2 text-sm uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -150,11 +150,12 @@ function CheckoutContent() {
                   Contact Information
                 </h3>
                 <div className="grid gap-6">
-                  <div className="group">
+                  <div className="relative group">
+                    <Mail className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
                     <input 
                       type="email" 
                       placeholder="Email Address"
-                      className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors text-lg"
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors text-lg"
                     />
                   </div>
                 </div>
@@ -166,31 +167,38 @@ function CheckoutContent() {
                   Shipping Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <input 
-                    type="text" 
-                    placeholder="First Name"
-                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="Last Name"
-                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="Address"
-                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors md:col-span-2"
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="City"
-                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="Postal Code"
-                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
-                  />
+                  <div className="relative md:col-span-2 group">
+                    <User className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
+                    <input 
+                      type="text" 
+                      placeholder="Full Name"
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
+                  <div className="relative md:col-span-2 group">
+                    <MapPin className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
+                    <input 
+                      type="text" 
+                      placeholder="Address"
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
+                  <div className="relative group">
+                    <Building2 className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
+                    <input 
+                      type="text" 
+                      placeholder="City"
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
+                  <div className="relative group">
+                    <Hash className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
+                    <input 
+                      type="text" 
+                      placeholder="Postal Code"
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
                 </div>
               </section>
 
@@ -220,6 +228,7 @@ function CheckoutContent() {
                   type="button"
                   className="w-full bg-black text-white h-14 uppercase tracking-widest text-sm font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                 >
+                  <CreditCard className="w-5 h-5" />
                   Proceed to Payment
                 </button>
                 

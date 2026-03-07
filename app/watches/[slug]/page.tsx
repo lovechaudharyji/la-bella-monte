@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { use, useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock, Square, Sun, Droplets, Feather, ShieldCheck, Zap, Moon, RefreshCcw, Shield, MapPin, Maximize, Weight, ShoppingBag, CreditCard } from "lucide-react";
 import FooterSection from "../../../components/sections/FooterSection";
 
 // Color mapping for the watch selector
@@ -21,33 +21,38 @@ const commonWatchData = {
   features: [
     {
       title: "Automatic Mechanical Movement",
-      desc: "No battery required! Powered by your wrist’s natural motion for precise and reliable timekeeping."
+      desc: "No battery required! Powered by your wrist’s natural motion for precise and reliable timekeeping.",
+      icon: Clock
     },
     {
       title: "Barrel-Shaped Design",
-      desc: "A bold and modern barrel-shaped case with a skeleton dial, offering a glimpse into the sophisticated automatic movement."
+      desc: "A bold and modern barrel-shaped case with a skeleton dial, offering a glimpse into the sophisticated automatic movement.",
+      icon: Square
     },
     {
       title: "Luminous Hands & Markers",
-      desc: "Glow-in-the-dark feature ensures easy readability even in low-light conditions."
+      desc: "Glow-in-the-dark feature ensures easy readability even in low-light conditions.",
+      icon: Sun
     },
     {
       title: "Waterproof & Sweat-Resistant",
-      desc: "Designed for daily use, resistant to minor water exposure like splashes and rain."
+      desc: "Designed for daily use, resistant to minor water exposure like splashes and rain.",
+      icon: Droplets
     },
     {
       title: "Skin-Friendly Silicone Strap",
-      desc: "Lightweight, breathable, and ultra-comfortable for all-day wear. Ideal for sensitive skin."
+      desc: "Lightweight, breathable, and ultra-comfortable for all-day wear. Ideal for sensitive skin.",
+      icon: Feather
     }
   ],
   highlights: [
-    "1 Year Warranty",
-    "Automatic",
-    "3 ATM Water Resistance",
-    "Glow in Dark",
-    "6 Months Replacement",
-    "Stainless Steel",
-    "Design in Italy"
+    { text: "1 Year Warranty", icon: ShieldCheck },
+    { text: "Automatic", icon: Zap },
+    { text: "3 ATM Water Resistance", icon: Droplets },
+    { text: "Glow in Dark", icon: Moon },
+    { text: "6 Months Replacement", icon: RefreshCcw },
+    { text: "Stainless Steel", icon: Shield },
+    { text: "Design in Italy", icon: MapPin }
   ],
   specs: {
     caseDiameter: "47 millimeter",
@@ -217,16 +222,18 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
 
             <div className="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
               <button 
-                onClick={() => alert("Added to cart!")}
-                className="bg-transparent border border-black text-black px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-black hover:text-white transition-colors"
+                onClick={() => alert("Added to bag!")}
+                className="flex items-center gap-3 bg-transparent border border-black text-black px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-black hover:text-white transition-colors"
               >
-                Add to Cart
+                <ShoppingBag className="w-4 h-4" />
+                <span>Add to Bag</span>
               </button>
               <Link 
                 href={`/checkout?watch=${activeSlug}`}
-                className="bg-black text-white px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-neutral-800 transition-colors"
+                className="flex items-center gap-3 bg-black text-white px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-neutral-800 transition-colors"
               >
-                Checkout
+                <CreditCard className="w-4 h-4" />
+                <span>Checkout</span>
               </Link>
               <span className="flex items-center text-xl font-sans text-black ml-4">
                 {watch.price}
@@ -244,11 +251,16 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
             <h2 className="text-3xl font-suave mb-6 text-black">About This Item</h2>
             <div className="space-y-8">
               {commonWatchData.features.map((feature, index) => (
-                <div key={index}>
-                  <h3 className="text-lg font-bold text-black mb-1">{feature.title}</h3>
-                  <p className="text-neutral-600 font-sans text-sm leading-relaxed">
-                    {feature.desc}
-                  </p>
+                <div key={index} className="flex gap-4 items-start">
+                  <div className="flex-shrink-0 mt-1 p-2 bg-neutral-100 rounded-full">
+                    <feature.icon className="w-5 h-5 text-black" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-black mb-1">{feature.title}</h3>
+                    <p className="text-neutral-600 font-sans text-sm leading-relaxed">
+                      {feature.desc}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -269,8 +281,10 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
               <div className="grid grid-cols-2 gap-4">
                 {commonWatchData.highlights.map((highlight, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 bg-red-600 rounded-full flex-shrink-0"></div>
-                    <span className="text-sm text-neutral-600 font-sans tracking-wide">{highlight}</span>
+                    <div className="p-1.5 bg-neutral-100 rounded-full flex-shrink-0">
+                      <highlight.icon className="w-4 h-4 text-black" />
+                    </div>
+                    <span className="text-sm text-neutral-600 font-sans tracking-wide">{highlight.text}</span>
                   </div>
                 ))}
               </div>
@@ -279,22 +293,34 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
             {/* Technical Specs */}
             <div className="bg-neutral-50 p-8 border border-black/10 rounded-sm">
               <h2 className="text-2xl font-suave mb-6 text-black">Technical Specifications</h2>
-              <div className="space-y-5">
-                <div className="flex justify-between border-b border-black/10 pb-3">
-                  <span className="text-neutral-500 uppercase tracking-widest text-xs">Case Diameter</span>
-                  <span className="font-sans text-sm text-black">{commonWatchData.specs.caseDiameter}</span>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center border-b border-black/5 pb-2">
+                  <div className="flex items-center gap-3">
+                    <Maximize className="w-4 h-4 text-neutral-400" />
+                    <span className="text-neutral-500 font-sans text-sm">Case Diameter</span>
+                  </div>
+                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.caseDiameter}</span>
                 </div>
-                <div className="flex justify-between border-b border-black/10 pb-3">
-                  <span className="text-neutral-500 uppercase tracking-widest text-xs">Strap Material</span>
-                  <span className="font-sans text-sm text-black">{commonWatchData.specs.strap}</span>
+                <div className="flex justify-between items-center border-b border-black/5 pb-2">
+                  <div className="flex items-center gap-3">
+                    <Feather className="w-4 h-4 text-neutral-400" />
+                    <span className="text-neutral-500 font-sans text-sm">Strap</span>
+                  </div>
+                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.strap}</span>
                 </div>
-                <div className="flex justify-between border-b border-black/10 pb-3">
-                  <span className="text-neutral-500 uppercase tracking-widest text-xs">Movement Type</span>
-                  <span className="font-sans text-sm text-black">{commonWatchData.specs.movementType}</span>
+                <div className="flex justify-between items-center border-b border-black/5 pb-2">
+                  <div className="flex items-center gap-3">
+                    <Clock className="w-4 h-4 text-neutral-400" />
+                    <span className="text-neutral-500 font-sans text-sm">Movement</span>
+                  </div>
+                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.movementType}</span>
                 </div>
-                <div className="flex justify-between border-b border-black/10 pb-3">
-                  <span className="text-neutral-500 uppercase tracking-widest text-xs">Item Weight</span>
-                  <span className="font-sans text-sm text-black">{commonWatchData.specs.weight}</span>
+                <div className="flex justify-between items-center border-b border-black/5 pb-2">
+                  <div className="flex items-center gap-3">
+                    <Weight className="w-4 h-4 text-neutral-400" />
+                    <span className="text-neutral-500 font-sans text-sm">Weight</span>
+                  </div>
+                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.weight}</span>
                 </div>
               </div>
             </div>
