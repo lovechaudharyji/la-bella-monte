@@ -23,7 +23,7 @@ export default function MenHeroSection() {
             Home <span className="mx-2">/</span> Collections <span className="mx-2">/</span> <span className="text-white">Men</span>
           </div>
           <div className="text-[11px] md:text-xs tracking-[0.2em] uppercase text-orange-500">
-            The Men's Collection
+            The Men&apos;s Collection
           </div>
           <h1 className="mt-4 text-6xl md:text-8xl leading-[1.05] font-suave tracking-normal">
             <span className="text-white">Crafted for</span>
