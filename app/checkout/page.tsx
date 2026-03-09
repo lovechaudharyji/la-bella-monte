@@ -18,31 +18,31 @@ const WATCHES: Record<
     name: "LBM Obsidian Moon",
     subtitle: "Exquisite & Timeless",
     imageSrc: "/image/daytona.png",
-    price: "₹24,500",
+    price: "₹9,000",
   },
   spirit: {
     name: "LBM Velaris",
     subtitle: "Sophisticated & Refined",
     imageSrc: "/image/Spirits.png",
-    price: "₹18,900",
+    price: "₹7,000",
   },
   phantom: {
     name: "LBM Etna Rosso",
     subtitle: "Mysterious & Opulent",
     imageSrc: "/image/Phantomes.png",
-    price: "₹32,000",
+    price: "₹7,000",
   },
   royale: {
     name: "LBM Solar Monarch – Gold",
     subtitle: "Regal & Majestic",
     imageSrc: "/image/Suprans.png",
-    price: "₹150,000",
+    price: "₹9,000",
   },
   yellow: {
     name: "LBM Sole Edition",
     subtitle: "Vibrant & Bold",
     imageSrc: "/image/Yellow.png",
-    price: "₹21,000",
+    price: "₹7,000",
   },
 };
 

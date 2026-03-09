@@ -75,7 +75,7 @@ const watches: Record<string, {
   daytona: {
     name: "LBM Obsidian Moon",
     tagline: "Exquisite & Timeless",
-    price: "₹24,500",
+    price: "₹9,000",
     image: "/image/daytona.png",
     description: "Inspired by the mysterious elegance of Italy’s midnight skies, where obsidian tones meet the quiet glow of the moon.",
     bgImage: "/image/2.webp",
@@ -83,7 +83,7 @@ const watches: Record<string, {
   spirit: {
     name: "LBM Velaris",
     tagline: "Sophisticated & Refined",
-    price: "₹18,900",
+    price: "₹7,000",
     image: "/image/Spirits.png",
     description: "Echoing the deep blue horizons of the Mediterranean, crafted for those who carry calm confidence and limitless vision.",
     bgImage: "/image/3S.png",
@@ -91,7 +91,7 @@ const watches: Record<string, {
   phantom: {
     name: "LBM Etna Rosso",
     tagline: "Mysterious & Opulent",
-    price: "₹32,000",
+    price: "₹7,000",
     image: "/image/Phantomes.png",
     description: "Inspired by the fiery spirit of Mount Etna, symbolizing passion, strength, and unstoppable energy.",
     bgImage: "/image/4.avif",
@@ -99,17 +99,18 @@ const watches: Record<string, {
   royale: {
     name: "LBM Solar Monarch – Gold",
     tagline: "Regal & Majestic",
-    price: "₹150,000",
+    price: "₹9,000",
     image: "/image/Suprans.png",
     description: "A tribute to the royal warmth, radiating power, confidence, and timeless luxury.",
-    bgVideo: "/image/5.mp4",
+    bgVideo: "/image/orange1.mp4",
   },
   yellow: {
     name: "LBM Sole Edition",
     tagline: "Vibrant & Bold",
-    price: "₹21,000",
+    price: "₹7,000",
     image: "/image/Yellow.png",
     description: "A celebration of Italy’s golden sunshine, capturing brightness, optimism, and the joy of every new moment.",
+    bgImage: "/image/yellowwatch.png"
   }
 };
 
@@ -196,6 +197,16 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
             <p className="text-lg md:text-xl font-sans tracking-widest text-neutral-500 uppercase mb-8">
               {watch.tagline}
             </p>
+
+            {/* Short Description */}
+            <div className="mb-8">
+              <span className="text-xs font-bold tracking-widest uppercase text-neutral-500 block mb-2">
+                Description
+              </span>
+              <p className="text-neutral-700 font-sans text-sm leading-relaxed">
+                {watch.description}
+              </p>
+            </div>
 
             {/* Color Selection */}
             <div className="mb-8">

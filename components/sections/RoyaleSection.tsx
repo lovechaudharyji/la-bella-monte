@@ -8,7 +8,7 @@ export default function RoyaleSection() {
       <div className="absolute inset-0">
         <video
           className="h-full w-full object-cover object-center"
-          src="/image/5.mp4"
+          src="/image/orange1.mp4"
           autoPlay
           loop
           muted

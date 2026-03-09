@@ -22,11 +22,11 @@ export default function DaytonaSection() {
         </div>
         <div className="relative flex h-full flex-[2] items-center justify-center order-2">
           <Link
-            href="/watches/daytona"
-            aria-label="View Daytona Details"
+            href="/checkout?watch=daytona"
+            aria-label="Checkout LBM Obsidian Moon"
             className="absolute inset-0"
           >
-            <span className="sr-only">View Daytona Details</span>
+            <span className="sr-only">Checkout LBM Obsidian Moon</span>
           </Link>
         </div>
         <div className="text-base md:text-xs font-bold tracking-normal uppercase text-center md:text-right flex-1 order-3 mb-2 md:mb-0 flex flex-col justify-end w-full pb-20 md:pb-0">

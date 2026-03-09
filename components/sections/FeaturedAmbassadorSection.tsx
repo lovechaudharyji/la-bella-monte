@@ -38,7 +38,7 @@ export default function FeaturedAmbassadorSection() {
 
           <div className="z-20 mt-3 md:mt-8">
             <Link 
-              href="/watches/daytona"
+              href="/men"
               className="inline-block border border-white px-5 py-2 text-[10px] md:text-xs tracking-[0.15em] md:tracking-widest uppercase text-white transition-colors hover:bg-white hover:text-black"
             >
               Learn More

@@ -1,108 +1,87 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 export default function InquiryFormSection() {
+  const [status, setStatus] = useState<"idle" | "sent">("idle");
+
+  const mailtoHref = useMemo(() => {
+    const subject = encodeURIComponent("LA BELLA MONTE Watches Inquiry");
+    const body = encodeURIComponent(
+      "Hi LA BELLA MONTE Team,%0D%0A%0D%0AI'm interested in:%0D%0A%0D%0AName:%0D%0AEmail:%0D%0AMessage:%0D%0A"
+    );
+    return `mailto:support@labellemonte.com?subject=${subject}&body=${body}`;
+  }, []);
+
   return (
-    <section className="relative z-[60] w-full bg-white py-20 px-6 md:px-12 lg:px-24">
-      <div className="mx-auto max-w-4xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-suave tracking-normal text-black mb-4">
-            Make an Inquiry
-          </h2>
-          <p className="text-neutral-600 font-sans tracking-wide max-w-xl mx-auto">
-            Interested in a timepiece? Connect with our concierge for personalized assistance and availability.
-          </p>
+    <section className="relative z-[60] w-full bg-white text-black py-24 border-t border-black/10">
+      <div className="mx-auto max-w-7xl px-6 md:px-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <div className="space-y-6">
+            <div className="text-xs tracking-[0.2em] uppercase text-neutral-500">
+              Inquiry
+            </div>
+            <h2 className="text-4xl md:text-5xl font-sans font-normal tracking-normal uppercase">
+              Speak With Us
+            </h2>
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed max-w-xl">
+              Tell us which timepiece you’re considering and we’ll help with
+              availability, sizing, and delivery.
+            </p>
+
+            <div className="flex items-center gap-3 text-xs tracking-[0.2em] uppercase text-neutral-500">
+              <div className="h-px w-12 bg-black/20" />
+              <div>Reply within 24 hours</div>
+            </div>
+          </div>
+
+          <div className="border border-black/10 rounded-sm p-6 md:p-8 bg-white shadow-sm">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setStatus("sent");
+                window.location.href = mailtoHref;
+              }}
+              className="grid grid-cols-1 gap-4"
+            >
+              <input
+                required
+                name="name"
+                placeholder="Name"
+                className="h-12 px-4 border border-black/15 outline-none focus:border-black text-sm"
+              />
+              <input
+                required
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="h-12 px-4 border border-black/15 outline-none focus:border-black text-sm"
+              />
+              <textarea
+                required
+                name="message"
+                placeholder="Message"
+                rows={5}
+                className="px-4 py-3 border border-black/15 outline-none focus:border-black text-sm resize-none"
+              />
+
+              <button
+                type="submit"
+                className="h-12 bg-black text-white uppercase text-xs tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+              >
+                Send Inquiry
+              </button>
+
+              {status === "sent" ? (
+                <div className="text-xs tracking-[0.15em] uppercase text-neutral-500">
+                  Opening your email client…
+                </div>
+              ) : null}
+            </form>
+          </div>
         </div>
-        
-        <form className="space-y-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="relative group">
-              <input 
-                type="text" 
-                id="firstName" 
-                className="block w-full bg-transparent border-b border-neutral-300 py-4 text-black focus:outline-none focus:border-black transition-colors peer placeholder-transparent" 
-                placeholder="First Name"
-              />
-              <label 
-                htmlFor="firstName" 
-                className="absolute left-0 -top-3.5 text-xs text-neutral-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-500 peer-placeholder-shown:top-4 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-black uppercase tracking-widest"
-              >
-                First Name
-              </label>
-            </div>
-            
-            <div className="relative group">
-              <input 
-                type="text" 
-                id="lastName" 
-                className="block w-full bg-transparent border-b border-neutral-300 py-4 text-black focus:outline-none focus:border-black transition-colors peer placeholder-transparent" 
-                placeholder="Last Name"
-              />
-              <label 
-                htmlFor="lastName" 
-                className="absolute left-0 -top-3.5 text-xs text-neutral-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-500 peer-placeholder-shown:top-4 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-black uppercase tracking-widest"
-              >
-                Last Name
-              </label>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="relative group">
-              <input 
-                type="email" 
-                id="email" 
-                className="block w-full bg-transparent border-b border-neutral-300 py-4 text-black focus:outline-none focus:border-black transition-colors peer placeholder-transparent" 
-                placeholder="Email Address"
-              />
-              <label 
-                htmlFor="email" 
-                className="absolute left-0 -top-3.5 text-xs text-neutral-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-500 peer-placeholder-shown:top-4 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-black uppercase tracking-widest"
-              >
-                Email Address
-              </label>
-            </div>
-            
-            <div className="relative group">
-              <input 
-                type="tel" 
-                id="phone" 
-                className="block w-full bg-transparent border-b border-neutral-300 py-4 text-black focus:outline-none focus:border-black transition-colors peer placeholder-transparent" 
-                placeholder="Phone Number"
-              />
-              <label 
-                htmlFor="phone" 
-                className="absolute left-0 -top-3.5 text-xs text-neutral-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-500 peer-placeholder-shown:top-4 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-black uppercase tracking-widest"
-              >
-                Phone Number
-              </label>
-            </div>
-          </div>
-
-          <div className="relative group">
-            <textarea 
-              id="message" 
-              rows={4}
-              className="block w-full bg-transparent border-b border-neutral-300 py-4 text-black focus:outline-none focus:border-black transition-colors peer placeholder-transparent resize-none" 
-              placeholder="Your Message"
-            ></textarea>
-            <label 
-              htmlFor="message" 
-              className="absolute left-0 -top-3.5 text-xs text-neutral-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-500 peer-placeholder-shown:top-4 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-black uppercase tracking-widest"
-            >
-              Your Message (Optional)
-            </label>
-          </div>
-
-          <div className="flex justify-center pt-8">
-            <button 
-              type="submit"
-              className="inline-block border border-black px-12 py-4 text-xs tracking-[0.2em] uppercase text-black transition-all hover:bg-black hover:text-white focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 focus:ring-offset-white"
-            >
-              Submit Inquiry
-            </button>
-          </div>
-        </form>
       </div>
     </section>
   );
 }
+
