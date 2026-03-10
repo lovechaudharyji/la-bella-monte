@@ -6,6 +6,29 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY as string
 );
 
+export async function GET() {
+  try {
+    const { count, error: countErr } = await supabase
+      .from("inquiries")
+      .select("*", { count: "exact", head: true });
+    if (countErr) {
+      return NextResponse.json({ error: countErr.message }, { status: 500 });
+    }
+    const { data: recent, error: listErr } = await supabase
+      .from("inquiries")
+      .select("id, first_name, email, status, created_at, message")
+      .order("created_at", { ascending: false })
+      .limit(10);
+    if (listErr) {
+      return NextResponse.json({ error: listErr.message }, { status: 500 });
+    }
+    return NextResponse.json({ count: count || 0, recent: recent || [] });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Server error";
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Partial<{
@@ -46,4 +69,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
-
