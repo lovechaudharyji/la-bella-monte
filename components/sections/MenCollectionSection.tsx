@@ -1,9 +1,9 @@
 'use client'
 import Link from "next/link";
-import { ShoppingBag, Heart, Eye } from "lucide-react";
+import { ShoppingBag, Heart, Eye, Plus, Minus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { addToCart, getCart } from "../../lib/cart";
+import { addToCart, getCart, setQuantity } from "../../lib/cart";
 
 type Product = {
   id: string;
@@ -32,6 +32,13 @@ export default function MenCollectionSection() {
     const map: Record<string, boolean> = {};
     ids.forEach((id) => {
       map[id] = true;
+    });
+    return map;
+  });
+  const [qty, setQty] = useState<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    getCart().forEach((c) => {
+      map[c.product_id] = c.quantity || 1;
     });
     return map;
   });
@@ -150,33 +157,71 @@ export default function MenCollectionSection() {
                           
                           <div className="flex items-center justify-between border-t border-black/10 pt-4">
                               <div className="flex gap-2">
-                                  <button
-                                    type="button"
-                                    disabled={!!added[watch.id]}
-                                    onClick={(e) => { 
-                                      e.preventDefault(); 
-                                      e.stopPropagation(); 
-                                      if (added[watch.id]) return;
-                                      addToCart({
-                                        product_id: watch.id,
-                                        slug: watch.slug,
-                                        name: watch.name,
-                                        price_minor: Number(watch.price_minor || 0),
-                                        currency: watch.currency || "INR",
-                                        image_url: (watch.image_url || "/image/daytona.png"),
-                                        quantity: 1
-                                      });
-                                      setAdded((prev) => ({ ...prev, [watch.id]: true }));
-                                    }}
-                                    className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all duration-300 shadow-lg shadow-black/10 ${
-                                      added[watch.id]
-                                        ? "bg-neutral-200 text-neutral-700 cursor-default"
-                                        : "bg-black text-white hover:bg-orange-500 hover:text-black"
-                                    }`}
-                                  >
-                                    <ShoppingBag size={12} strokeWidth={2} />
-                                    {added[watch.id] ? "Added" : "Add to Bag"}
-                                  </button>
+                                  {!added[watch.id] ? (
+                                    <button
+                                      type="button"
+                                      onClick={(e) => { 
+                                        e.preventDefault(); 
+                                        e.stopPropagation(); 
+                                        addToCart({
+                                          product_id: watch.id,
+                                          slug: watch.slug,
+                                          name: watch.name,
+                                          price_minor: Number(watch.price_minor || 0),
+                                          currency: watch.currency || "INR",
+                                          image_url: (watch.image_url || "/image/daytona.png"),
+                                          quantity: 1
+                                        });
+                                        setAdded((prev) => ({ ...prev, [watch.id]: true }));
+                                        setQty((prev) => ({ ...prev, [watch.id]: 1 }));
+                                      }}
+                                      className="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-orange-500 hover:text-black transition-all duration-300 shadow-lg shadow-black/10"
+                                    >
+                                      <ShoppingBag size={12} strokeWidth={2} />
+                                      Add to Bag
+                                    </button>
+                                  ) : (
+                                    <div className="flex items-center gap-2">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          const current = qty[watch.id] ?? 1;
+                                          const next = current - 1;
+                                          setQuantity(watch.id, next);
+                                          if (next <= 0) {
+                                            setAdded((prev) => ({ ...prev, [watch.id]: false }));
+                                            setQty((prev) => {
+                                              const copy = { ...prev };
+                                              delete copy[watch.id];
+                                              return copy;
+                                            });
+                                            return;
+                                          }
+                                          setQty((prev) => ({ ...prev, [watch.id]: next }));
+                                        }}
+                                        className="w-8 h-8 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100"
+                                      >
+                                        <Minus className="w-3 h-3" />
+                                      </button>
+                                      <div className="min-w-8 text-center text-xs tracking-widest font-semibold">{qty[watch.id] ?? 1}</div>
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          const current = qty[watch.id] ?? 1;
+                                          const next = current + 1;
+                                          setQuantity(watch.id, next);
+                                          setQty((prev) => ({ ...prev, [watch.id]: next }));
+                                        }}
+                                        className="w-8 h-8 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100"
+                                      >
+                                        <Plus className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                  )}
                                   <button
                                     type="button"
                                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(`/watches/${watch.slug}`); }}

@@ -37,7 +37,15 @@ function CheckoutContent() {
     postalCode: ""
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const refresh = () => setItems(getCart());
+    window.addEventListener("lbm_cart_updated", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("lbm_cart_updated", refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
 
   const placeOrder = async () => {
     if (items.length === 0) return;
@@ -69,7 +77,7 @@ function CheckoutContent() {
   return (
     <div className="min-h-screen bg-white text-black selection:bg-black/10">
       <div className="flex flex-col lg:flex-row min-h-screen">
-        {/* Left Section - Product Showcase */}
+        {/* Left Section - Items Review */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -86,28 +94,52 @@ function CheckoutContent() {
             </Link>
           </div>
 
-          <div className="h-full flex flex-col items-center justify-center p-10 relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="relative w-full aspect-square max-w-md"
-            >
-              <Image
-                src={(items[0]?.image_url?.trim() || "/image/daytona.png")}
-                alt={items[0]?.name || ""}
-                fill
-                className="object-contain drop-shadow-2xl"
-                priority
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/image/daytona.png"; }}
-              />
-            </motion.div>
-            
-            <div className="mt-8 text-center">
-              <h2 className="text-3xl font-suave tracking-normal text-black">{items[0]?.name || "Checkout"}</h2>
-              <p className="text-neutral-500 text-sm tracking-widest uppercase mt-2">{items.length > 1 ? `${items.length} items` : ""}</p>
-              <p className="text-2xl font-light mt-4 tracking-tight text-neutral-900">{formatINR(totals.subtotal, currency)}</p>
+          <div className="h-full flex flex-col p-8 pt-28 relative">
+            <div className="mb-4">
+              <h2 className="text-xl font-suave tracking-normal text-black">Your Items</h2>
+              <p className="text-neutral-500 text-xs uppercase tracking-widest mt-1">
+                {items.length} {items.length === 1 ? "item" : "items"}
+              </p>
+            </div>
+            <div className="flex-1 overflow-auto pr-2">
+              {items.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-neutral-500 text-sm">
+                  Your bag is empty
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {items.map((it) => (
+                    <div key={it.product_id} className="flex items-center gap-4 rounded border border-neutral-200 bg-white p-3">
+                      <div className="relative h-16 w-16 flex-shrink-0 bg-neutral-50 rounded">
+                        <Image
+                          src={it.image_url || "/image/daytona.png"}
+                          alt={it.name}
+                          fill
+                          sizes="64px"
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-xs font-semibold uppercase tracking-widest text-black">
+                          {it.name}
+                        </div>
+                        <div className="mt-1 text-xs text-neutral-500">
+                          Qty {it.quantity}
+                        </div>
+                      </div>
+                      <div className="text-sm text-black font-medium">
+                        {formatINR(it.price_minor * it.quantity, it.currency || currency)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="mt-6 border-t border-neutral-200 pt-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm uppercase tracking-widest text-neutral-600">Subtotal</span>
+                <span className="text-lg font-light text-black">{formatINR(totals.subtotal, currency)}</span>
+              </div>
             </div>
           </div>
         </motion.div>

@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Clock, Square, Sun, Droplets, Feather, ShieldCheck, Zap, Moon, RefreshCcw, Shield, MapPin, Maximize, Weight, ShoppingBag, CreditCard } from "lucide-react";
+import { ArrowLeft, Clock, Square, Sun, Droplets, Feather, ShieldCheck, Zap, Moon, RefreshCcw, Shield, MapPin, Maximize, Weight, ShoppingBag, CreditCard, Plus, Minus } from "lucide-react";
 import FooterSection from "../../../components/sections/FooterSection";
-import { addToCart } from "../../../lib/cart";
+import { addToCart, getCart, setQuantity } from "../../../lib/cart";
 
 const commonWatchData = {
   description: "Men's Automatic Mechanical Watch | Barrel-Shaped Skeleton Dial | Luminous Waterproof Wristwatch with Skin-Friendly Silicone Strap",
@@ -62,6 +62,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
   const [activeSlug, setActiveSlug] = useState(slug);
   const [product, setProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<Product[]>([]);
+  const [cartQty, setCartQty] = useState(0);
 
   useEffect(() => {
     setActiveSlug(slug);
@@ -87,6 +88,21 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
     load();
     return () => { ignore = true; };
   }, [slug]);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    const refresh = () => {
+      const found = getCart().find((c) => c.product_id === product.id);
+      setCartQty(found ? Number(found.quantity || 0) : 0);
+    };
+    refresh();
+    window.addEventListener("lbm_cart_updated", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("lbm_cart_updated", refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, [product?.id]);
 
   useEffect(() => {
     if (activeSlug && activeSlug !== slug) {
@@ -238,9 +254,10 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
             </div>
 
             <div className="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
-              <button 
-                onClick={() => {
-                  if (product) {
+              {cartQty <= 0 ? (
+                <button
+                  type="button"
+                  onClick={() => {
                     addToCart({
                       product_id: product.id,
                       slug: product.slug,
@@ -248,16 +265,46 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
                       price_minor: Number(product.price_minor || 0),
                       currency: product.currency || "INR",
                       image_url: product.image_url || "/image/daytona.png",
-                      quantity: 1
+                      quantity: 1,
                     });
-                  }
-                  router.push(`/bag`);
-                }}
-                className="flex items-center gap-3 bg-transparent border border-black text-black px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-black hover:text-white transition-colors"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Add to Bag</span>
-              </button>
+                    setCartQty(1);
+                  }}
+                  className="flex items-center gap-3 bg-transparent border border-black text-black px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-black hover:text-white transition-colors"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Add to Bag</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-3 bg-transparent border border-black px-4 py-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = cartQty - 1;
+                      setQuantity(product.id, next);
+                      setCartQty(Math.max(0, next));
+                    }}
+                    className="h-10 w-10 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <div className="min-w-10 text-center text-xs tracking-[0.2em] font-bold">
+                    {cartQty}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = cartQty + 1;
+                      setQuantity(product.id, next);
+                      setCartQty(next);
+                    }}
+                    className="h-10 w-10 flex items-center justify-center border border-neutral-300 rounded hover:bg-neutral-100"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
               <Link 
                 href={`/checkout`}
                 className="flex items-center gap-3 bg-black text-white px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-neutral-800 transition-colors"
@@ -265,7 +312,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
                 <CreditCard className="w-4 h-4" />
                 <span>Checkout</span>
               </Link>
-              <span className="flex items-center text-xl font-sans text-black ml-4">
+              <span className="flex items-center text-xl font-sans text-black md:ml-4">
                 {watch.price}
               </span>
             </div>

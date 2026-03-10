@@ -33,6 +33,7 @@ export function setCart(items: CartItem[]) {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(KEY, JSON.stringify(items));
+    window.dispatchEvent(new Event("lbm_cart_updated"));
   } catch {
   }
 }
@@ -41,6 +42,7 @@ export function clearCart() {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.removeItem(KEY);
+    window.dispatchEvent(new Event("lbm_cart_updated"));
   } catch {
   }
 }
@@ -62,8 +64,12 @@ export function removeFromCart(product_id: string) {
 }
 
 export function setQuantity(product_id: string, quantity: number) {
+  if (quantity <= 0) {
+    removeFromCart(product_id);
+    return;
+  }
   const items = getCart().map((it) =>
-    it.product_id === product_id ? { ...it, quantity: Math.max(1, quantity) } : it
+    it.product_id === product_id ? { ...it, quantity } : it
   );
   setCart(items);
 }
