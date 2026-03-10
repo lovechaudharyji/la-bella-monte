@@ -34,9 +34,16 @@ function CheckoutContent() {
   useEffect(() => {
     if (!slug) return;
     let ignore = false;
-    fetch(`/api/products/${slug}`)
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => { if (!ignore) setProduct(d); });
+    const load = async () => {
+      try {
+        const r = await fetch(`/api/products/${slug}`);
+        const d = r.ok ? await r.json() : null;
+        if (!ignore) setProduct(d);
+      } catch {
+        if (!ignore) setProduct(null);
+      }
+    };
+    load();
     return () => { ignore = true; };
   }, [slug]);
 

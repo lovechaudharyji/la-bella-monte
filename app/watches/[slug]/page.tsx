@@ -68,12 +68,22 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
 
   useEffect(() => {
     let ignore = false;
-    fetch(`/api/products/${slug}`)
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => { if (!ignore) setProduct(d); });
-    fetch(`/api/products`)
-      .then((r) => r.ok ? r.json() : [])
-      .then((d) => { if (!ignore) setVariants(d); });
+    const load = async () => {
+      try {
+        const r1 = await fetch(`/api/products/${slug}`);
+        const d1 = r1.ok ? await r1.json() : null;
+        if (!ignore) setProduct(d1);
+        const r2 = await fetch(`/api/products`);
+        const d2 = r2.ok ? await r2.json() : [];
+        if (!ignore) setVariants(d2);
+      } catch {
+        if (!ignore) {
+          setProduct(null);
+          setVariants([]);
+        }
+      }
+    };
+    load();
     return () => { ignore = true; };
   }, [slug]);
 

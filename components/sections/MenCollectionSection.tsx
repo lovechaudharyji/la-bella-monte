@@ -29,9 +29,16 @@ export default function MenCollectionSection() {
 
   useEffect(() => {
     let ignore = false;
-    fetch("/api/products")
-      .then((r) => r.ok ? r.json() : [])
-      .then((d) => { if (!ignore) setItems(d); });
+    const load = async () => {
+      try {
+        const r = await fetch("/api/products");
+        const d = r.ok ? await r.json() : [];
+        if (!ignore) setItems(d);
+      } catch {
+        if (!ignore) setItems([]);
+      }
+    };
+    load();
     return () => { ignore = true; };
   }, []);
 
