@@ -10,6 +10,14 @@ export type CartItem = {
 
 const KEY = "lbm_cart_v1";
 
+function emitToast(detail: { type?: "success" | "info" | "error"; title?: string; message: string }) {
+  if (typeof window === "undefined") return;
+  try {
+    window.dispatchEvent(new CustomEvent("lbm_toast", { detail }));
+  } catch {
+  }
+}
+
 export function getCart(): CartItem[] {
   if (typeof window === "undefined") return [];
   try {
@@ -52,15 +60,22 @@ export function addToCart(item: CartItem) {
   const idx = items.findIndex((it) => it.product_id === item.product_id);
   if (idx >= 0) {
     items[idx] = { ...items[idx], quantity: items[idx].quantity + item.quantity };
+    emitToast({ type: "success", title: "Bag Updated", message: `${items[idx].name} × ${items[idx].quantity}` });
   } else {
     items.push(item);
+    emitToast({ type: "success", title: "Added to Bag", message: item.name });
   }
   setCart(items);
 }
 
 export function removeFromCart(product_id: string) {
-  const items = getCart().filter((it) => it.product_id !== product_id);
+  const prev = getCart();
+  const removed = prev.find((it) => it.product_id === product_id);
+  const items = prev.filter((it) => it.product_id !== product_id);
   setCart(items);
+  if (removed) {
+    emitToast({ type: "info", title: "Removed", message: removed.name });
+  }
 }
 
 export function setQuantity(product_id: string, quantity: number) {
@@ -68,10 +83,12 @@ export function setQuantity(product_id: string, quantity: number) {
     removeFromCart(product_id);
     return;
   }
-  const items = getCart().map((it) =>
-    it.product_id === product_id ? { ...it, quantity } : it
-  );
+  const items = getCart().map((it) => (it.product_id === product_id ? { ...it, quantity } : it));
   setCart(items);
+  const updated = items.find((it) => it.product_id === product_id);
+  if (updated) {
+    emitToast({ type: "success", title: "Quantity Updated", message: `${updated.name} × ${updated.quantity}` });
+  }
 }
 
 export function computeSubtotal(items: CartItem[]) {

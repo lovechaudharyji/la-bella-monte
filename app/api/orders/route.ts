@@ -6,6 +6,28 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY as string
 );
 
+export async function GET() {
+  try {
+    const { count, error: countErr } = await supabase
+      .from("orders")
+      .select("*", { count: "exact", head: true });
+    if (countErr) {
+      return NextResponse.json({ error: countErr.message }, { status: 500 });
+    }
+    const { data: recent, error: listErr } = await supabase
+      .from("orders")
+      .select("id,total_minor,currency,status,created_at")
+      .order("created_at", { ascending: false })
+      .limit(10);
+    if (listErr) {
+      return NextResponse.json({ error: listErr.message }, { status: 500 });
+    }
+    return NextResponse.json({ count: count || 0, recent: recent || [] });
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { computeTotals, getCart, removeFromCart, setQuantity, type CartItem } from "@/lib/cart";
+import Image from "next/image";
+import { CheckCircle2, Info, XCircle, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 function formatINR(value: number, currency?: string | null) {
   return new Intl.NumberFormat("en-IN", {
@@ -16,6 +19,9 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [toasts, setToasts] = useState<
+    Array<{ id: number; type?: "success" | "info" | "error"; title?: string; message: string; duration?: number }>
+  >([]);
 
   const refreshCart = () => {
     setCartItems(getCart());
@@ -26,10 +32,27 @@ export default function Navbar() {
     const raf = window.requestAnimationFrame(onUpdate);
     window.addEventListener("lbm_cart_updated", onUpdate);
     window.addEventListener("storage", onUpdate);
+    const onToast = (e: Event) => {
+      const detail = (e as CustomEvent).detail as {
+        type?: "success" | "info" | "error";
+        title?: string;
+        message: string;
+        duration?: number;
+      } | undefined;
+      if (!detail) return;
+      const id = Date.now() + Math.random();
+      const duration = Math.max(2000, Math.min(detail.duration ?? 4200, 10000));
+      setToasts((prev) => [...prev, { id, ...detail, duration }]);
+      window.setTimeout(() => {
+        setToasts((prev) => prev.filter((t) => t.id !== id));
+      }, duration);
+    };
+    window.addEventListener("lbm_toast", onToast as EventListener);
     return () => {
       window.cancelAnimationFrame(raf);
       window.removeEventListener("lbm_cart_updated", onUpdate);
       window.removeEventListener("storage", onUpdate);
+      window.removeEventListener("lbm_toast", onToast as EventListener);
     };
   }, []);
 
@@ -217,12 +240,18 @@ export default function Navbar() {
                 ) : (
                   <div className="space-y-4">
                     {cartItems.map((it) => (
-                      <div key={it.product_id} className="flex items-center justify-between gap-4 border border-neutral-200 p-3">
-                        <div className="min-w-0">
-                          <div className="truncate text-xs font-semibold uppercase tracking-widest">{it.name}</div>
-                          <div className="mt-1 text-xs text-neutral-600">
-                            {formatINR(it.price_minor, it.currency || currency)}
+                      <div key={it.product_id} className="flex items-center justify-between gap-4 border border-neutral-200 p-3 rounded">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="relative h-12 w-12 bg-neutral-50 rounded overflow-hidden flex-shrink-0">
+                            <Image
+                              src={it.image_url || "/image/daytona.png"}
+                              alt={it.name}
+                              fill
+                              sizes="48px"
+                              className="object-contain"
+                            />
                           </div>
+                          <div className="truncate text-xs font-semibold uppercase tracking-widest">{it.name}</div>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
@@ -259,6 +288,9 @@ export default function Navbar() {
                           >
                             ×
                           </button>
+                          <div className="ml-2 hidden sm:block text-xs text-neutral-600 min-w-[70px] text-right">
+                            {formatINR(it.price_minor * (it.quantity || 0), it.currency || currency)}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -292,6 +324,93 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      <div
+        className="pointer-events-none fixed right-4 top-20 z-[95] w-[90vw] max-w-sm"
+        role="region"
+        aria-live="polite"
+      >
+        <AnimatePresence initial={false}>
+          {toasts.map((t) => {
+            const Icon = t.type === "error" ? XCircle : t.type === "info" ? Info : CheckCircle2;
+            const borderColor =
+              t.type === "error"
+                ? "border-red-200"
+                : t.type === "info"
+                ? "border-blue-200"
+                : "border-green-200";
+            const bgPill =
+              t.type === "error"
+                ? "bg-red-50"
+                : t.type === "info"
+                ? "bg-blue-50"
+                : "bg-green-50";
+            const iconColor =
+              t.type === "error"
+                ? "text-red-600"
+                : t.type === "info"
+                ? "text-blue-600"
+                : "text-green-600";
+            const barColor =
+              t.type === "error"
+                ? "bg-red-600"
+                : t.type === "info"
+                ? "bg-blue-600"
+                : "bg-green-600";
+            return (
+              <motion.div
+                key={t.id}
+                initial={{ opacity: 0, x: 24, scale: 0.98 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 24, scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 380, damping: 30, mass: 0.8 }}
+                className={`pointer-events-auto mb-2 overflow-hidden rounded-lg border ${borderColor} bg-white shadow-lg shadow-black/10`}
+              >
+                <div className="flex items-start gap-3 p-4">
+                  <div className={`mt-0.5 rounded-full p-1 ${bgPill}`}>
+                    <Icon className={`h-4 w-4 ${iconColor}`} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    {t.title ? (
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-900">
+                        {t.title}
+                      </div>
+                    ) : null}
+                    <div className="mt-0.5 text-sm text-neutral-700">{t.message}</div>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label="Dismiss"
+                    className="ml-2 rounded p-1 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800"
+                    onClick={() =>
+                      setToasts((prev) => prev.filter((x) => x.id !== t.id))
+                    }
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="h-1 w-full bg-neutral-100">
+                  <div
+                    className={`h-full ${barColor}`}
+                    style={{
+                      width: "100%",
+                      transition: `width linear ${t.duration ?? 4200}ms`,
+                    }}
+                    // Trigger width collapse after mount
+                    ref={(el) => {
+                      if (!el) return;
+                      // force reflow then set width to 0 for transition effect
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      el.offsetWidth;
+                      el.style.width = "0%";
+                    }}
+                  />
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
     </>
   );
 }

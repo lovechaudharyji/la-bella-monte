@@ -69,6 +69,10 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
   }, [slug]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     let ignore = false;
     const load = async () => {
       try {
@@ -220,14 +224,16 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
               {watch.tagline}
             </p>
 
-            {/* Short Description */}
-            <div className="mb-8">
-              <span className="text-xs font-bold tracking-widest uppercase text-neutral-500 block mb-2">
-                Description
-              </span>
-              <p className="text-neutral-700 font-sans text-sm leading-relaxed">
+            {/* Description above price */}
+            {watch.description && (
+              <p className="text-neutral-700 font-sans text-sm leading-relaxed mb-4">
                 {watch.description}
               </p>
+            )}
+
+            {/* Price */}
+            <div className="mb-8">
+              <span className="text-3xl font-sans font-bold text-black">{watch.price}</span>
             </div>
 
             {/* Color Selection */}
@@ -312,9 +318,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
                 <CreditCard className="w-4 h-4" />
                 <span>Checkout</span>
               </Link>
-              <span className="flex items-center text-xl font-sans text-black md:ml-4">
-                {watch.price}
-              </span>
+
             </div>
           </div>
         </div>
