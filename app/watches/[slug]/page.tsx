@@ -6,6 +6,7 @@ import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Clock, Square, Sun, Droplets, Feather, ShieldCheck, Zap, Moon, RefreshCcw, Shield, MapPin, Maximize, Weight, ShoppingBag, CreditCard } from "lucide-react";
 import FooterSection from "../../../components/sections/FooterSection";
+import { addToCart } from "../../../lib/cart";
 
 const commonWatchData = {
   description: "Men's Automatic Mechanical Watch | Barrel-Shaped Skeleton Dial | Luminous Waterproof Wristwatch with Skin-Friendly Silicone Strap",
@@ -238,14 +239,27 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
 
             <div className="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
               <button 
-              onClick={() => router.push(`/checkout?watch=${activeSlug}`)}
+                onClick={() => {
+                  if (product) {
+                    addToCart({
+                      product_id: product.id,
+                      slug: product.slug,
+                      name: product.name,
+                      price_minor: Number(product.price_minor || 0),
+                      currency: product.currency || "INR",
+                      image_url: product.image_url || "/image/daytona.png",
+                      quantity: 1
+                    });
+                  }
+                  router.push(`/bag`);
+                }}
                 className="flex items-center gap-3 bg-transparent border border-black text-black px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-black hover:text-white transition-colors"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Add to Bag</span>
               </button>
               <Link 
-                href={`/checkout?watch=${activeSlug}`}
+                href={`/checkout`}
                 className="flex items-center gap-3 bg-black text-white px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-neutral-800 transition-colors"
               >
                 <CreditCard className="w-4 h-4" />

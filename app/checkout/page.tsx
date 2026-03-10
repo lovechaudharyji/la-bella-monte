@@ -1,21 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ShieldCheck, Truck, Mail, User, MapPin, Building2, Hash, CreditCard } from "lucide-react";
 import Link from "next/link";
 import FooterSection from "../../components/sections/FooterSection";
+import { CartItem, getCart, clearCart, computeTotals } from "../../lib/cart";
 
-type Product = {
-  slug: string;
-  name: string;
-  tagline: string | null;
-  price_minor: number;
-  currency: string | null;
-  image_url: string | null;
-};
+ 
 
 function formatINR(value: number, currency?: string | null) {
   return new Intl.NumberFormat("en-IN", {
@@ -26,39 +20,51 @@ function formatINR(value: number, currency?: string | null) {
 }
 
 function CheckoutContent() {
-  const searchParams = useSearchParams();
-  const slug = searchParams.get("watch");
-  const [product, setProduct] = useState<Product | null>(null);
-  const backHref = slug ? `/watches/${slug}` : "/men";
+  const router = useRouter();
+  const [items, setItems] = useState<CartItem[]>(() => getCart());
+  const currency = items[0]?.currency || "INR";
+  const totals = useMemo(() => computeTotals(items), [items]);
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    country: "",
+    postalCode: ""
+  });
 
-  useEffect(() => {
-    if (!slug) return;
-    let ignore = false;
-    const load = async () => {
-      try {
-        const r = await fetch(`/api/products/${slug}`);
-        const d = r.ok ? await r.json() : null;
-        if (!ignore) setProduct(d);
-      } catch {
-        if (!ignore) setProduct(null);
-      }
-    };
-    load();
-    return () => { ignore = true; };
-  }, [slug]);
+  useEffect(() => {}, []);
 
-  const priceBreakdown = useMemo(() => {
-    const priceValue = product?.price_minor ? Number(product.price_minor) : 0;
-    const gst = priceValue * 0.18;
-    const shipping = 0;
-    const total = priceValue + gst + shipping;
-    return {
-      subtotal: formatINR(priceValue, product?.currency),
-      gst: formatINR(gst, product?.currency),
-      shipping: shipping === 0 ? "Free" : formatINR(shipping, product?.currency),
-      total: formatINR(total, product?.currency)
-    };
-  }, [product]);
+  const placeOrder = async () => {
+    if (items.length === 0) return;
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        customer: {
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          address_line1: form.address1,
+          address_line2: form.address2,
+          city: form.city,
+          state: form.state,
+          country: form.country,
+          postal_code: form.postalCode
+        },
+        items
+      })
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    clearCart();
+    router.replace(`/order-success?order=${encodeURIComponent(data.id)}`);
+  };
 
   return (
     <div className="min-h-screen bg-white text-black selection:bg-black/10">
@@ -72,7 +78,7 @@ function CheckoutContent() {
         >
           <div className="absolute top-24 left-8 z-10">
             <Link 
-              href={backHref}
+              href="/bag"
               className="group flex items-center gap-2 text-sm uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -88,8 +94,8 @@ function CheckoutContent() {
               className="relative w-full aspect-square max-w-md"
             >
               <Image
-                src={(product?.image_url?.trim() || "/image/daytona.png")}
-                alt={product?.name || ""}
+                src={(items[0]?.image_url?.trim() || "/image/daytona.png")}
+                alt={items[0]?.name || ""}
                 fill
                 className="object-contain drop-shadow-2xl"
                 priority
@@ -99,9 +105,9 @@ function CheckoutContent() {
             </motion.div>
             
             <div className="mt-8 text-center">
-              <h2 className="text-3xl font-suave tracking-normal text-black">{product?.name}</h2>
-              <p className="text-neutral-500 text-sm tracking-widest uppercase mt-2">{product?.tagline || ""}</p>
-              <p className="text-2xl font-light mt-4 tracking-tight text-neutral-900">{priceBreakdown.subtotal}</p>
+              <h2 className="text-3xl font-suave tracking-normal text-black">{items[0]?.name || "Checkout"}</h2>
+              <p className="text-neutral-500 text-sm tracking-widest uppercase mt-2">{items.length > 1 ? `${items.length} items` : ""}</p>
+              <p className="text-2xl font-light mt-4 tracking-tight text-neutral-900">{formatINR(totals.subtotal, currency)}</p>
             </div>
           </div>
         </motion.div>
@@ -119,8 +125,7 @@ function CheckoutContent() {
               <p className="text-neutral-500 text-sm">Complete your acquisition.</p>
             </div>
 
-            <form className="space-y-12">
-              {/* Contact Info */}
+            <form className="space-y-12" onSubmit={(e) => { e.preventDefault(); }}>
               <section className="space-y-6">
                 <h3 className="text-sm font-medium uppercase tracking-widest text-neutral-900 border-b border-neutral-200 pb-2">
                   Contact Information
@@ -131,13 +136,14 @@ function CheckoutContent() {
                     <input 
                       type="email" 
                       placeholder="Email Address"
+                      value={form.email}
+                      onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                       className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors text-lg"
                     />
                   </div>
                 </div>
               </section>
 
-              {/* Shipping Address */}
               <section className="space-y-6">
                 <h3 className="text-sm font-medium uppercase tracking-widest text-neutral-900 border-b border-neutral-200 pb-2">
                   Shipping Details
@@ -147,24 +153,71 @@ function CheckoutContent() {
                     <User className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
                     <input 
                       type="text" 
-                      placeholder="Full Name"
+                      placeholder="First Name"
+                      value={form.firstName}
+                      onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))}
                       className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
                     />
                   </div>
                   <div className="relative md:col-span-2 group">
+                    <input 
+                      type="text" 
+                      placeholder="Last Name"
+                      value={form.lastName}
+                      onChange={(e) => setForm((f) => ({ ...f, lastName: e.target.value }))}
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
+                  <input 
+                    type="tel" 
+                    placeholder="Phone"
+                    value={form.phone}
+                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors md:col-span-2"
+                  />
+                  <div className="relative md:col-span-2 group">
                     <MapPin className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
                     <input 
                       type="text" 
-                      placeholder="Address"
+                      placeholder="Address Line 1"
+                      value={form.address1}
+                      onChange={(e) => setForm((f) => ({ ...f, address1: e.target.value }))}
                       className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
                     />
                   </div>
+                  <input 
+                    type="text" 
+                    placeholder="Address Line 2"
+                    value={form.address2}
+                    onChange={(e) => setForm((f) => ({ ...f, address2: e.target.value }))}
+                    className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors md:col-span-2"
+                  />
                   <div className="relative group">
                     <Building2 className="absolute left-0 top-3.5 w-5 h-5 text-neutral-400 group-focus-within:text-black transition-colors" />
                     <input 
                       type="text" 
                       placeholder="City"
+                      value={form.city}
+                      onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
                       className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
+                  <div className="relative group">
+                    <input 
+                      type="text" 
+                      placeholder="State"
+                      value={form.state}
+                      onChange={(e) => setForm((f) => ({ ...f, state: e.target.value }))}
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
+                    />
+                  </div>
+                  <div className="relative group">
+                    <input 
+                      type="text" 
+                      placeholder="Country"
+                      value={form.country}
+                      onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))}
+                      className="w-full bg-transparent border-b border-neutral-300 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
                     />
                   </div>
                   <div className="relative group">
@@ -172,46 +225,46 @@ function CheckoutContent() {
                     <input 
                       type="text" 
                       placeholder="Postal Code"
+                      value={form.postalCode}
+                      onChange={(e) => setForm((f) => ({ ...f, postalCode: e.target.value }))}
                       className="w-full bg-transparent border-b border-neutral-300 py-3 pl-8 text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors"
                     />
                   </div>
                 </div>
               </section>
 
-              {/* Order Summary Details */}
               <section className="bg-neutral-50 rounded-lg p-6 space-y-4 border border-neutral-100">
                 <div className="flex justify-between text-sm text-neutral-600">
                   <span>Subtotal</span>
-                  <span className="text-black font-medium">{priceBreakdown.subtotal}</span>
+                  <span className="text-black font-medium">{formatINR(totals.subtotal, currency)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-neutral-600">
                   <span>GST (18%)</span>
-                  <span className="text-black font-medium">{priceBreakdown.gst}</span>
+                  <span className="text-black font-medium">{formatINR(totals.tax, currency)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-neutral-600">
                   <span>Shipping</span>
-                  <span className="text-green-600 font-medium uppercase text-xs">{priceBreakdown.shipping}</span>
+                  <span className="text-green-600 font-medium uppercase text-xs">{totals.shipping === 0 ? "Free" : formatINR(totals.shipping, currency)}</span>
                 </div>
                 <div className="pt-4 border-t border-neutral-200 flex justify-between items-center">
                   <span className="text-sm uppercase tracking-widest text-black font-semibold">Total</span>
-                  <span className="text-xl font-light text-black">{priceBreakdown.total}</span>
+                  <span className="text-xl font-light text-black">{formatINR(totals.total, currency)}</span>
                 </div>
               </section>
 
-              {/* Action */}
               <div className="space-y-6">
                 <button 
                   type="button"
+                  onClick={placeOrder}
                   className="w-full bg-black text-white h-14 uppercase tracking-widest text-sm font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                 >
                   <CreditCard className="w-5 h-5" />
-                  Proceed to Payment
+                  Place Order
                 </button>
                 
                 <div className="grid grid-cols-2 gap-4 text-xs text-neutral-500">
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-neutral-400" />
-                    <span>Secure Encrypted Payment</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Truck className="w-4 h-4 text-neutral-400" />

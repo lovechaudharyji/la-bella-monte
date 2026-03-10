@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ShoppingBag, Heart, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { addToCart, getCart } from "../../lib/cart";
 
 type Product = {
   id: string;
@@ -26,6 +27,14 @@ function formatINR(value: number, currency?: string | null) {
 export default function MenCollectionSection() {
   const router = useRouter();
   const [items, setItems] = useState<Product[]>([]);
+  const [added, setAdded] = useState<Record<string, boolean>>(() => {
+    const ids = new Set(getCart().map((c) => c.product_id));
+    const map: Record<string, boolean> = {};
+    ids.forEach((id) => {
+      map[id] = true;
+    });
+    return map;
+  });
 
   useEffect(() => {
     let ignore = false;
@@ -143,15 +152,30 @@ export default function MenCollectionSection() {
                               <div className="flex gap-2">
                                   <button
                                     type="button"
+                                    disabled={!!added[watch.id]}
                                     onClick={(e) => { 
                                       e.preventDefault(); 
                                       e.stopPropagation(); 
-                                      router.push(`/checkout?watch=${watch.slug}`); 
+                                      if (added[watch.id]) return;
+                                      addToCart({
+                                        product_id: watch.id,
+                                        slug: watch.slug,
+                                        name: watch.name,
+                                        price_minor: Number(watch.price_minor || 0),
+                                        currency: watch.currency || "INR",
+                                        image_url: (watch.image_url || "/image/daytona.png"),
+                                        quantity: 1
+                                      });
+                                      setAdded((prev) => ({ ...prev, [watch.id]: true }));
                                     }}
-                                    className="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-orange-500 hover:text-black transition-all duration-300 shadow-lg shadow-black/10"
+                                    className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all duration-300 shadow-lg shadow-black/10 ${
+                                      added[watch.id]
+                                        ? "bg-neutral-200 text-neutral-700 cursor-default"
+                                        : "bg-black text-white hover:bg-orange-500 hover:text-black"
+                                    }`}
                                   >
                                     <ShoppingBag size={12} strokeWidth={2} />
-                                    Add to Bag
+                                    {added[watch.id] ? "Added" : "Add to Bag"}
                                   </button>
                                   <button
                                     type="button"
