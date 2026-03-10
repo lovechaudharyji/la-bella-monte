@@ -82,17 +82,16 @@ function CheckoutContent() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="relative w-full lg:w-[45%] lg:sticky lg:top-0 lg:h-screen lg:border-r border-neutral-200 bg-neutral-50 overflow-hidden"
         >
-          <div className="absolute top-16 left-6 z-10">
-            <Link 
-              href="/bag"
-              className="group flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-              Back
-            </Link>
-          </div>
-
-          <div className="h-full flex flex-col p-6 pt-16 relative">
+          <div className="h-full flex flex-col p-6 pt-6 relative">
+            <div className="mb-3">
+              <Link 
+                href="/bag"
+                className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                Back
+              </Link>
+            </div>
             <div className="mb-2">
               <h2 className="text-lg font-suave tracking-normal text-black">Your Items</h2>
               <p className="text-neutral-500 text-[11px] uppercase tracking-widest mt-0.5">
