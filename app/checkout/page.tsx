@@ -3,87 +3,55 @@
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { Suspense, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ShieldCheck, Truck, Mail, User, MapPin, Building2, Hash, CreditCard } from "lucide-react";
 import Link from "next/link";
 import FooterSection from "../../components/sections/FooterSection";
 
-type WatchId = "daytona" | "spirit" | "phantom" | "royale" | "yellow";
-
-const WATCHES: Record<
-  WatchId,
-  { name: string; subtitle: string; imageSrc: string; price: string }
-> = {
-  daytona: {
-    name: "LBM Obsidian Moon",
-    subtitle: "Exquisite & Timeless",
-    imageSrc: "/image/daytona.png",
-    price: "₹9,000",
-  },
-  spirit: {
-    name: "LBM Velaris",
-    subtitle: "Sophisticated & Refined",
-    imageSrc: "/image/Spirits.png",
-    price: "₹7,000",
-  },
-  phantom: {
-    name: "LBM Etna Rosso",
-    subtitle: "Mysterious & Opulent",
-    imageSrc: "/image/Phantomes.png",
-    price: "₹7,000",
-  },
-  royale: {
-    name: "LBM Solar Monarch – Gold",
-    subtitle: "Regal & Majestic",
-    imageSrc: "/image/Suprans.png",
-    price: "₹9,000",
-  },
-  yellow: {
-    name: "LBM Sole Edition",
-    subtitle: "Vibrant & Bold",
-    imageSrc: "/image/Yellow.png",
-    price: "₹7,000",
-  },
+type Product = {
+  slug: string;
+  name: string;
+  tagline: string | null;
+  price_minor: number;
+  currency: string | null;
+  image_url: string | null;
 };
 
-function normalizeWatchId(value: string | null): WatchId {
-  if (
-    value === "daytona" ||
-    value === "spirit" ||
-    value === "phantom" ||
-    value === "royale" ||
-    value === "yellow"
-  ) {
-    return value;
-  }
-  return "daytona";
+function formatINR(value: number, currency?: string | null) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: currency || "INR",
+    maximumFractionDigits: 0
+  }).format(value);
 }
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
-  const watchId = normalizeWatchId(searchParams.get("watch"));
-  const watch = useMemo(() => WATCHES[watchId], [watchId]);
+  const slug = searchParams.get("watch");
+  const [product, setProduct] = useState<Product | null>(null);
+  const backHref = slug ? `/watches/${slug}` : "/men";
+
+  useEffect(() => {
+    if (!slug) return;
+    let ignore = false;
+    fetch(`/api/products/${slug}`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (!ignore) setProduct(d); });
+    return () => { ignore = true; };
+  }, [slug]);
 
   const priceBreakdown = useMemo(() => {
-    const priceValue = parseInt(watch.price.replace(/[^0-9]/g, ''), 10);
+    const priceValue = product?.price_minor ? Number(product.price_minor) : 0;
     const gst = priceValue * 0.18;
     const shipping = 0;
     const total = priceValue + gst + shipping;
-
-    const formatCurrency = (value: number) =>
-      new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-        maximumFractionDigits: 0,
-      }).format(value);
-
     return {
-      subtotal: watch.price,
-      gst: formatCurrency(gst),
-      shipping: shipping === 0 ? "Free" : formatCurrency(shipping),
-      total: formatCurrency(total)
+      subtotal: formatINR(priceValue, product?.currency),
+      gst: formatINR(gst, product?.currency),
+      shipping: shipping === 0 ? "Free" : formatINR(shipping, product?.currency),
+      total: formatINR(total, product?.currency)
     };
-  }, [watch]);
+  }, [product]);
 
   return (
     <div className="min-h-screen bg-white text-black selection:bg-black/10">
@@ -97,7 +65,7 @@ function CheckoutContent() {
         >
           <div className="absolute top-24 left-8 z-10">
             <Link 
-              href={`/watches/${watchId}`}
+              href={backHref}
               className="group flex items-center gap-2 text-sm uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -113,19 +81,20 @@ function CheckoutContent() {
               className="relative w-full aspect-square max-w-md"
             >
               <Image
-                src={watch.imageSrc}
-                alt={watch.name}
+                src={(product?.image_url?.trim() || "/image/daytona.png")}
+                alt={product?.name || ""}
                 fill
                 className="object-contain drop-shadow-2xl"
                 priority
                 sizes="(max-width: 1024px) 100vw, 45vw"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/image/daytona.png"; }}
               />
             </motion.div>
             
             <div className="mt-8 text-center">
-              <h2 className="text-3xl font-suave tracking-normal text-black">{watch.name}</h2>
-              <p className="text-neutral-500 text-sm tracking-widest uppercase mt-2">{watch.subtitle}</p>
-              <p className="text-2xl font-light mt-4 tracking-tight text-neutral-900">{watch.price}</p>
+              <h2 className="text-3xl font-suave tracking-normal text-black">{product?.name}</h2>
+              <p className="text-neutral-500 text-sm tracking-widest uppercase mt-2">{product?.tagline || ""}</p>
+              <p className="text-2xl font-light mt-4 tracking-tight text-neutral-900">{priceBreakdown.subtotal}</p>
             </div>
           </div>
         </motion.div>

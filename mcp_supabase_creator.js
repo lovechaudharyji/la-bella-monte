@@ -223,4 +223,67 @@ async function verifyTables() {
 }
 
 // Execute the creation
-createTables();
+const seedSQL = `
+DELETE FROM product_images
+WHERE product_id IN (SELECT id FROM products WHERE slug IN ('daytona','spirit','phantom','royale','yellow'));
+
+INSERT INTO products (
+  slug, name, tagline, description, price_minor, currency,
+  color_name, color_hex, badge_label, movement_type, water_resistance,
+  case_diameter_mm, strap_type, weight_g, stock_quantity, image_url,
+  hero_bg_image_url, hero_bg_video_url, is_active
+) VALUES
+('daytona','LBM Obsidian Moon','Exquisite & Timeless','Inspired by the mysterious elegance of Italy’s midnight skies, where obsidian tones meet the quiet glow of the moon.',24500,'INR','Black','#000000','Exclusive','Automatic','50m',47,'Silicone',150,10,'/image/daytona.png','/image/2.webp',NULL,true),
+('spirit','LBM Velaris','Sophisticated & Refined','Echoing the deep blue horizons of the Mediterranean, crafted for those who carry calm confidence and limitless vision.',18900,'INR','Blue','#1d4ed8','Classic','Quartz','50m',44,'Steel',120,12,'/image/Spirits.png','/image/3S.png',NULL,true),
+('phantom','LBM Etna Rosso','Mysterious & Opulent','Inspired by the fiery spirit of Mount Etna, symbolizing passion, strength, and unstoppable energy.',32000,'INR','Red','#b91c1c','Limited','Quartz','50m',45,'Steel',130,8,'/image/Phantomes.png','/image/4.avif',NULL,true),
+('royale','LBM Solar Monarch – Gold','Regal & Majestic','A tribute to the royal warmth, radiating power, confidence, and timeless luxury.',150000,'INR','Orange','#ea580c','New','Automatic','50m',46,'Steel',140,5,'/image/Suprans.png',NULL,'/image/orange1.mp4',true),
+('yellow','LBM Sole Edition','Vibrant & Bold','A celebration of Italy’s golden sunshine, capturing brightness, optimism, and the joy of every new moment.',21000,'INR','Yellow','#eab308','Best Seller','Quartz','50m',44,'Silicone',110,15,'/image/Yellow.png','/image/yellowwatch.png',NULL,true)
+ON CONFLICT (slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  tagline = EXCLUDED.tagline,
+  description = EXCLUDED.description,
+  price_minor = EXCLUDED.price_minor,
+  currency = EXCLUDED.currency,
+  color_name = EXCLUDED.color_name,
+  color_hex = EXCLUDED.color_hex,
+  badge_label = EXCLUDED.badge_label,
+  movement_type = EXCLUDED.movement_type,
+  water_resistance = EXCLUDED.water_resistance,
+  case_diameter_mm = EXCLUDED.case_diameter_mm,
+  strap_type = EXCLUDED.strap_type,
+  weight_g = EXCLUDED.weight_g,
+  stock_quantity = EXCLUDED.stock_quantity,
+  image_url = EXCLUDED.image_url,
+  hero_bg_image_url = EXCLUDED.hero_bg_image_url,
+  hero_bg_video_url = EXCLUDED.hero_bg_video_url,
+  is_active = EXCLUDED.is_active;
+
+INSERT INTO product_images (product_id, image_url, alt_text, sort_order) VALUES
+((SELECT id FROM products WHERE slug='daytona'), '/image/daytona.png','Daytona',1),
+((SELECT id FROM products WHERE slug='daytona'), '/image/2.webp','Background',2),
+((SELECT id FROM products WHERE slug='spirit'), '/image/Spirits.png','Spirit',1),
+((SELECT id FROM products WHERE slug='spirit'), '/image/3S.png','Background',2),
+((SELECT id FROM products WHERE slug='phantom'), '/image/Phantomes.png','Phantom',1),
+((SELECT id FROM products WHERE slug='phantom'), '/image/4.avif','Background',2),
+((SELECT id FROM products WHERE slug='royale'), '/image/Suprans.png','Royale',1),
+((SELECT id FROM products WHERE slug='yellow'), '/image/Yellow.png','Yellow',1),
+((SELECT id FROM products WHERE slug='yellow'), '/image/yellowwatch.png','Background',2);
+`;
+
+async function seedProducts() {
+  try {
+    console.log('🌱 Seeding five watches into products via MCP...');
+    const { error } = await supabase.rpc('exec_sql', { sql: seedSQL });
+    if (error) throw error;
+    console.log('✅ Seed complete');
+  } catch (e) {
+    console.error('❌ Seed error:', e);
+    process.exit(1);
+  }
+}
+
+if (process.argv.includes('seed')) {
+  seedProducts();
+} else {
+  createTables();
+}

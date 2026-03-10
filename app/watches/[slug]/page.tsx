@@ -3,47 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { use, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Clock, Square, Sun, Droplets, Feather, ShieldCheck, Zap, Moon, RefreshCcw, Shield, MapPin, Maximize, Weight, ShoppingBag, CreditCard } from "lucide-react";
 import FooterSection from "../../../components/sections/FooterSection";
 
-// Color mapping for the watch selector
-const colors = [
-  { name: 'Black', slug: 'daytona', hex: '#000000' },
-  { name: 'Blue', slug: 'spirit', hex: '#1d4ed8' },
-  { name: 'Red', slug: 'phantom', hex: '#b91c1c' },
-  { name: 'Yellow', slug: 'yellow', hex: '#eab308' },
-  { name: 'Orange', slug: 'royale', hex: '#ea580c' },
-];
-
-// Common watch data used across all watches
 const commonWatchData = {
   description: "Men's Automatic Mechanical Watch | Barrel-Shaped Skeleton Dial | Luminous Waterproof Wristwatch with Skin-Friendly Silicone Strap",
   features: [
-    {
-      title: "Automatic Mechanical Movement",
-      desc: "No battery required! Powered by your wrist’s natural motion for precise and reliable timekeeping.",
-      icon: Clock
-    },
-    {
-      title: "Barrel-Shaped Design",
-      desc: "A bold and modern barrel-shaped case with a skeleton dial, offering a glimpse into the sophisticated automatic movement.",
-      icon: Square
-    },
-    {
-      title: "Luminous Hands & Markers",
-      desc: "Glow-in-the-dark feature ensures easy readability even in low-light conditions.",
-      icon: Sun
-    },
-    {
-      title: "Waterproof & Sweat-Resistant",
-      desc: "Designed for daily use, resistant to minor water exposure like splashes and rain.",
-      icon: Droplets
-    },
-    {
-      title: "Skin-Friendly Silicone Strap",
-      desc: "Lightweight, breathable, and ultra-comfortable for all-day wear. Ideal for sensitive skin.",
-      icon: Feather
-    }
+    { title: "Automatic Mechanical Movement", desc: "No battery required! Powered by your wrist’s natural motion for precise and reliable timekeeping.", icon: Clock },
+    { title: "Barrel-Shaped Design", desc: "A bold and modern barrel-shaped case with a skeleton dial, offering a glimpse into the sophisticated automatic movement.", icon: Square },
+    { title: "Luminous Hands & Markers", desc: "Glow-in-the-dark feature ensures easy readability even in low-light conditions.", icon: Sun },
+    { title: "Waterproof & Sweat-Resistant", desc: "Designed for daily use, resistant to minor water exposure like splashes and rain.", icon: Droplets },
+    { title: "Skin-Friendly Silicone Strap", desc: "Lightweight, breathable, and ultra-comfortable for all-day wear. Ideal for sensitive skin.", icon: Feather }
   ],
   highlights: [
     { text: "1 Year Warranty", icon: ShieldCheck },
@@ -53,91 +24,113 @@ const commonWatchData = {
     { text: "6 Months Replacement", icon: RefreshCcw },
     { text: "Stainless Steel", icon: Shield },
     { text: "Design in Italy", icon: MapPin }
-  ],
-  specs: {
-    caseDiameter: "47 millimeter",
-    strap: "Silicone",
-    movementType: "Quartz",
-    weight: "150g"
-  }
+  ]
 };
 
-// Specific watch data
-const watches: Record<string, {
+type Product = {
+  id: string;
+  slug: string;
   name: string;
-  tagline: string;
-  price: string;
-  image: string;
-  description: string;
-  bgImage?: string;
-  bgVideo?: string;
-}> = {
-  daytona: {
-    name: "LBM Obsidian Moon",
-    tagline: "Exquisite & Timeless",
-    price: "₹9,000",
-    image: "/image/daytona.png",
-    description: "Inspired by the mysterious elegance of Italy’s midnight skies, where obsidian tones meet the quiet glow of the moon.",
-    bgImage: "/image/2.webp",
-  },
-  spirit: {
-    name: "LBM Velaris",
-    tagline: "Sophisticated & Refined",
-    price: "₹7,000",
-    image: "/image/Spirits.png",
-    description: "Echoing the deep blue horizons of the Mediterranean, crafted for those who carry calm confidence and limitless vision.",
-    bgImage: "/image/3S.png",
-  },
-  phantom: {
-    name: "LBM Etna Rosso",
-    tagline: "Mysterious & Opulent",
-    price: "₹7,000",
-    image: "/image/Phantomes.png",
-    description: "Inspired by the fiery spirit of Mount Etna, symbolizing passion, strength, and unstoppable energy.",
-    bgImage: "/image/4.avif",
-  },
-  royale: {
-    name: "LBM Solar Monarch – Gold",
-    tagline: "Regal & Majestic",
-    price: "₹9,000",
-    image: "/image/Suprans.png",
-    description: "A tribute to the royal warmth, radiating power, confidence, and timeless luxury.",
-    bgVideo: "/image/orange1.mp4",
-  },
-  yellow: {
-    name: "LBM Sole Edition",
-    tagline: "Vibrant & Bold",
-    price: "₹7,000",
-    image: "/image/Yellow.png",
-    description: "A celebration of Italy’s golden sunshine, capturing brightness, optimism, and the joy of every new moment.",
-    bgImage: "/image/yellowwatch.png"
-  }
+  tagline: string | null;
+  description: string | null;
+  price_minor: number;
+  currency: string | null;
+  image_url: string | null;
+  color_name: string | null;
+  color_hex: string | null;
+  hero_bg_image_url: string | null;
+  hero_bg_video_url: string | null;
+  movement_type?: string | null;
+  water_resistance?: string | null;
+  case_diameter_mm?: number | null;
+  strap_type?: string | null;
+  weight_g?: number | null;
 };
+
+function formatINR(value: number, currency?: string | null) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: currency || "INR",
+    maximumFractionDigits: 0
+  }).format(value);
+}
 
 export default function WatchDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  // Unwrap params using React.use()
   const { slug } = use(params);
-  
-  // State for active watch selection (defaults to current slug)
+  const router = useRouter();
   const [activeSlug, setActiveSlug] = useState(slug);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [variants, setVariants] = useState<Product[]>([]);
 
-  // Update activeSlug if the URL slug changes (e.g. navigation)
   useEffect(() => {
     setActiveSlug(slug);
   }, [slug]);
 
-  const watch = watches[activeSlug as string];
+  useEffect(() => {
+    let ignore = false;
+    fetch(`/api/products/${slug}`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (!ignore) setProduct(d); });
+    fetch(`/api/products`)
+      .then((r) => r.ok ? r.json() : [])
+      .then((d) => { if (!ignore) setVariants(d); });
+    return () => { ignore = true; };
+  }, [slug]);
 
-  if (!watch) {
+  useEffect(() => {
+    if (activeSlug && activeSlug !== slug) {
+      router.replace(`/watches/${activeSlug}`);
+    }
+  }, [activeSlug, slug, router]);
+
+  const primaryImage =
+    (product?.image_url?.trim().replace(/[)\s]+$/, "")) ||
+    "/image/daytona.png";
+
+  const bgRaw = product?.hero_bg_image_url || undefined;
+  const imgName = (primaryImage || "").replace(/\?.*$/, "").split("/").pop()?.toLowerCase();
+  const bgName = (bgRaw || "").replace(/\?.*$/, "").split("/").pop()?.toLowerCase();
+  const bgImageNormalized = imgName && bgName && imgName === bgName ? undefined : bgRaw;
+
+  const watch = {
+    name: product?.name || "",
+    tagline: product?.tagline || "",
+    price: formatINR(product?.price_minor || 0, product?.currency),
+    image: primaryImage,
+    description: product?.description || "",
+    bgImage: bgImageNormalized,
+    bgVideo: product?.hero_bg_video_url || undefined
+  };
+
+  const [imageSrc, setImageSrc] = useState(watch.image);
+  const [bgSrc, setBgSrc] = useState(watch.bgImage ? watch.bgImage.replace(/[)\s]+$/, "") : "/image/2.webp");
+
+  useEffect(() => {
+    setImageSrc(watch.image);
+    setBgSrc(watch.bgImage ? watch.bgImage.replace(/[)\s]+$/, "") : "/image/2.webp");
+  }, [watch.image, watch.bgImage]);
+
+  if (!product) {
     return (
-      <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-suave mb-4">Watch Not Found</h1>
-        <Link href="/" className="text-neutral-600 hover:text-black underline">
-          Return Home
-        </Link>
+      <div className="min-h-screen bg-white text-black flex items-center justify-center">
+        <span>Loading…</span>
       </div>
     );
   }
+
+
+  const colors = variants.map((p) => ({
+    name: p.color_name || p.slug,
+    slug: p.slug,
+    hex: p.color_hex || "#000000"
+  }));
+
+  const specs = {
+    caseDiameter: product.case_diameter_mm ? `${product.case_diameter_mm} millimeter` : "47 millimeter",
+    strap: product.strap_type || "Silicone",
+    movementType: product.movement_type || "Quartz",
+    weight: product.weight_g ? `${product.weight_g}g` : "150g",
+  };
 
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden">
@@ -156,10 +149,11 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
             />
           ) : (
             <Image
-              src={watch.bgImage || "/image/2.webp"} // Fallback image
+              src={bgSrc}
               alt={`${watch.name} background`}
               fill
               className="object-cover opacity-50"
+              onError={() => setBgSrc("/image/2.webp")}
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white"></div>
@@ -181,11 +175,12 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
           {/* Watch Image */}
           <div className="flex-1 relative w-full h-[50vh] md:h-[80vh]">
             <Image
-              src={watch.image}
+              src={imageSrc}
               alt={watch.name}
               fill
               className="object-contain drop-shadow-2xl"
               priority
+              onError={() => setImageSrc("/image/daytona.png")}
             />
           </div>
 
@@ -233,7 +228,7 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
 
             <div className="flex flex-col md:flex-row gap-6 justify-center md:justify-start">
               <button 
-                onClick={() => alert("Added to bag!")}
+              onClick={() => router.push(`/checkout?watch=${activeSlug}`)}
                 className="flex items-center gap-3 bg-transparent border border-black text-black px-8 py-4 text-xs tracking-[0.2em] uppercase font-bold hover:bg-black hover:text-white transition-colors"
               >
                 <ShoppingBag className="w-4 h-4" />
@@ -310,28 +305,28 @@ export default function WatchDetailPage({ params }: { params: Promise<{ slug: st
                     <Maximize className="w-4 h-4 text-neutral-400" />
                     <span className="text-neutral-500 font-sans text-sm">Case Diameter</span>
                   </div>
-                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.caseDiameter}</span>
+                  <span className="text-black font-medium font-sans text-sm">{specs.caseDiameter}</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-black/5 pb-2">
                   <div className="flex items-center gap-3">
                     <Feather className="w-4 h-4 text-neutral-400" />
                     <span className="text-neutral-500 font-sans text-sm">Strap</span>
                   </div>
-                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.strap}</span>
+                  <span className="text-black font-medium font-sans text-sm">{specs.strap}</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-black/5 pb-2">
                   <div className="flex items-center gap-3">
                     <Clock className="w-4 h-4 text-neutral-400" />
                     <span className="text-neutral-500 font-sans text-sm">Movement</span>
                   </div>
-                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.movementType}</span>
+                  <span className="text-black font-medium font-sans text-sm">{specs.movementType}</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-black/5 pb-2">
                   <div className="flex items-center gap-3">
                     <Weight className="w-4 h-4 text-neutral-400" />
                     <span className="text-neutral-500 font-sans text-sm">Weight</span>
                   </div>
-                  <span className="text-black font-medium font-sans text-sm">{commonWatchData.specs.weight}</span>
+                  <span className="text-black font-medium font-sans text-sm">{specs.weight}</span>
                 </div>
               </div>
             </div>

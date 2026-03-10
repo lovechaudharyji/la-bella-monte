@@ -26,36 +26,65 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const handleScroll = () => {
-      const daytona = document.getElementById('section-daytona');
-      const spirit = document.getElementById('section-spirit');
-      const phantom = document.getElementById('section-phantom');
-      const royale = document.getElementById('section-royale');
-
-      if (!daytona || !spirit || !phantom || !royale) return;
-
-      const getVisibility = (el: HTMLElement) => {
-        const rect = el.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        // Calculate how much of the section is visible from the bottom up
-        // When rect.top is at viewportHeight, visibility is 0
-        // When rect.top is at 0, visibility is 1 (fully covers screen)
-        // We clamp between 0 and 1
-        return Math.max(0, Math.min(1, (viewportHeight - rect.top) / viewportHeight));
-      };
-
-      setSectionProgress({
-        daytona: getVisibility(daytona),
-        spirit: getVisibility(spirit),
-        phantom: getVisibility(phantom),
-        royale: getVisibility(royale),
-      });
+    const sections = {
+      daytona: document.getElementById("section-daytona"),
+      spirit: document.getElementById("section-spirit"),
+      phantom: document.getElementById("section-phantom"),
+      royale: document.getElementById("section-royale"),
     };
 
-    window.addEventListener("scroll", handleScroll);
-    // Initial check
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    let ticking = false;
+
+    const getVisibility = (el: HTMLElement) => {
+      const rect = el.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const v = Math.max(0, Math.min(1, (viewportHeight - rect.top) / viewportHeight));
+      return Math.round(v * 100) / 100; // reduce state churn
+    };
+
+    const update = () => {
+      const d = sections.daytona;
+      const s = sections.spirit;
+      const p = sections.phantom;
+      const r = sections.royale;
+      if (!d || !s || !p || !r) {
+        ticking = false;
+        return;
+      }
+      const next = {
+        daytona: getVisibility(d),
+        spirit: getVisibility(s),
+        phantom: getVisibility(p),
+        royale: getVisibility(r),
+      };
+      setSectionProgress((prev) => {
+        if (
+          prev.daytona === next.daytona &&
+          prev.spirit === next.spirit &&
+          prev.phantom === next.phantom &&
+          prev.royale === next.royale
+        ) {
+          return prev;
+        }
+        return next;
+      });
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   // Track visibility of each section for the "curtain" effect
@@ -69,7 +98,8 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.daytona * 100)}% 0 ${sectionProgress.spirit * 100}% 0)`
+            clipPath: `inset(${100 - (sectionProgress.daytona * 100)}% 0 ${sectionProgress.spirit * 100}% 0)`,
+            willChange: "clip-path, transform"
           }}
         >
           <Link href="/watches/daytona" className="relative flex items-center justify-center h-full w-full">
@@ -87,7 +117,8 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.spirit * 100)}% 0 ${sectionProgress.phantom * 100}% 0)`
+            clipPath: `inset(${100 - (sectionProgress.spirit * 100)}% 0 ${sectionProgress.phantom * 100}% 0)`,
+            willChange: "clip-path, transform"
           }}
         >
           <Link href="/watches/spirit" className="relative flex items-center justify-center h-full w-full">
@@ -105,7 +136,8 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.phantom * 100)}% 0 ${sectionProgress.royale * 100}% 0)`
+            clipPath: `inset(${100 - (sectionProgress.phantom * 100)}% 0 ${sectionProgress.royale * 100}% 0)`,
+            willChange: "clip-path, transform"
           }}
         >
           <Link href="/watches/phantom" className="relative flex items-center justify-center h-full w-full">
@@ -123,7 +155,8 @@ export default function Home() {
         <div 
           className="absolute inset-0 flex items-center justify-center bg-transparent pointer-events-auto"
           style={{ 
-            clipPath: `inset(${100 - (sectionProgress.royale * 100)}% 0 0 0)`
+            clipPath: `inset(${100 - (sectionProgress.royale * 100)}% 0 0 0)`,
+            willChange: "clip-path, transform"
           }}
         >
           <Link href="/watches/royale" className="relative flex items-center justify-center h-full w-full">
