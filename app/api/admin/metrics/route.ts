@@ -6,6 +6,14 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY as string
 );
 
+type ProductRow = {
+  stock_quantity: number | null;
+};
+
+type OrderItemRow = {
+  quantity: number | null;
+};
+
 export async function GET() {
   try {
     const start = new Date();
@@ -21,7 +29,7 @@ export async function GET() {
       return NextResponse.json({ error: productsErr.message }, { status: 500 });
     }
     const productsActive = products?.length ?? 0;
-    const stockTotal = (products || []).reduce((sum, p: any) => sum + (Number(p.stock_quantity || 0)), 0);
+    const stockTotal = (products as ProductRow[] | null | undefined || []).reduce((sum, p) => sum + Number(p.stock_quantity || 0), 0);
 
     // Inquiries
     const { count: inquiriesTotal, error: inquiriesErr } = await supabase
@@ -55,7 +63,7 @@ export async function GET() {
     if (itemsErr) {
       return NextResponse.json({ error: itemsErr.message }, { status: 500 });
     }
-    const soldToday = (itemsToday || []).reduce((sum, it: any) => sum + Number(it.quantity || 0), 0);
+    const soldToday = (itemsToday as OrderItemRow[] | null | undefined || []).reduce((sum, it) => sum + Number(it.quantity || 0), 0);
 
     return NextResponse.json({
       productsActive,
@@ -70,4 +78,3 @@ export async function GET() {
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
-

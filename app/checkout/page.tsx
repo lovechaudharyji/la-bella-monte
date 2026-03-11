@@ -105,30 +105,32 @@ function CheckoutContent() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {items.map((it) => (
-                    <div key={it.product_id} className="flex items-center gap-3 rounded border border-neutral-200 bg-white p-2">
-                      <div className="relative h-14 w-14 flex-shrink-0 bg-neutral-50 rounded">
-                        <Image
-                          src={it.image_url || "/image/daytona.png"}
-                          alt={it.name}
-                          fill
-                          sizes="56px"
-                          className="object-contain"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-[11px] font-semibold uppercase tracking-widest text-black">
-                          {it.name}
+                  {items.map((it) => {
+                    return (
+                      <div key={it.product_id} className="flex items-center gap-3 rounded border border-neutral-200 bg-white p-2">
+                        <div className="relative h-14 w-14 flex-shrink-0 bg-neutral-50 rounded">
+                          <Image
+                            src={it.image_url || "/image/daytona.png"}
+                            alt={it.name}
+                            fill
+                            sizes="56px"
+                            className="object-contain"
+                          />
                         </div>
-                        <div className="mt-0.5 text-[11px] text-neutral-500">
-                          Qty {it.quantity}
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-[11px] font-semibold uppercase tracking-widest text-black">
+                            {it.name}
+                          </div>
+                          <div className="mt-0.5 text-[11px] text-neutral-500">
+                            Qty {it.quantity}
+                          </div>
+                        </div>
+                        <div className="text-[13px] text-black font-medium">
+                          {formatINR(it.price_minor * it.quantity, it.currency || currency)}
                         </div>
                       </div>
-                      <div className="text-[13px] text-black font-medium">
-                        {formatINR(it.price_minor * it.quantity, it.currency || currency)}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

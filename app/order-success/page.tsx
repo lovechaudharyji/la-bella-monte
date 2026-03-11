@@ -1,10 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import FooterSection from "../../components/sections/FooterSection";
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const params = useSearchParams();
   const id = params.get("order");
   return (
@@ -19,5 +20,13 @@ export default function OrderSuccessPage() {
       </div>
       <FooterSection />
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }
